@@ -1,1 +1,1 @@
-# SenlaCoursesKrishchik
+# Krishchik Artsem Andreevich
