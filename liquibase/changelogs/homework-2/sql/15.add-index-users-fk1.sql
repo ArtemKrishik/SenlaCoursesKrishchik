@@ -1,0 +1,1 @@
+CREATE UNIQUE INDEX users_fk1 ON users using btree  (role_id)
