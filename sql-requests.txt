@@ -1,0 +1,4 @@
+select * from  users u inner join roles r on  r.id = u.role_id   where r.id = 1
+select * from  users u inner join profiles p on  p.id = u.profile_id   where p.id = 1
+select * from  users u inner join events e on  u.id = e.creator_id   where u.id = 1
+select * from  places p inner join events e on  p.id = e.place_id   where p.id = 1

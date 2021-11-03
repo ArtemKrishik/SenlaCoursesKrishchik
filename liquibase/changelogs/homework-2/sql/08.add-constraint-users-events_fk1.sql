@@ -1,0 +1,1 @@
+ALTER TABLE users_events ADD CONSTRAINT users_events_fk1 FOREIGN KEY ("event_id") REFERENCES events("id");

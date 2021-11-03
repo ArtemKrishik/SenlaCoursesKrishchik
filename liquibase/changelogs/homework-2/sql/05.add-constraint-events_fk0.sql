@@ -1,0 +1,1 @@
+ALTER TABLE events ADD CONSTRAINT events_fk0 FOREIGN KEY ("place_id") REFERENCES places("id");
