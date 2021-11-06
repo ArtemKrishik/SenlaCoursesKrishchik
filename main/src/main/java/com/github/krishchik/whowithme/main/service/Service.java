@@ -10,7 +10,7 @@ import com.github.krishchik.whowithme.main.dao.DatabaseInterface;
 public class Service implements ServiceInterface{
 
     @Autowired
-    DatabaseInterface database;
+    private DatabaseInterface database;
 
     @Override
     public String doTask() {

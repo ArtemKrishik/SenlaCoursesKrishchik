@@ -2,17 +2,20 @@ package com.github.krishchik.whowithme.di.injection;
 
 import org.reflections.Reflections;
 
+import java.io.FileNotFoundException;
 import java.lang.reflect.Field;
+import java.util.Properties;
 import java.util.Set;
 
 public class DependencyInject {
     private static DependencyInject instance;
     private static Reflections scanner;
 
-    public static DependencyInject getInstance() {
+    public static DependencyInject getInstance() throws FileNotFoundException {
         if (instance == null) {
             instance = new DependencyInject();
-            scanner = new Reflections("com.github");
+            final Properties properties = ConfigReader.getInstance().readConfig("application.properties");
+            scanner = new Reflections(properties.getProperty("packageNameToScan"));
         }
         return instance;
     }

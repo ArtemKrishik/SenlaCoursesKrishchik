@@ -1,7 +1,5 @@
 package com.github.krishchik.whowithme.di.injection;
 
-
-
 import com.github.krishchik.whowithme.di.annotation.Autowired;
 import com.github.krishchik.whowithme.di.annotation.Component;
 import com.github.krishchik.whowithme.di.annotation.Value;
@@ -37,7 +35,7 @@ public class DependencyService {
         return instance;
     }
 
-    public void setVariable(Class<?> clazz) throws IllegalAccessException, InstantiationException,
+    public void putIntoContext(Class<?> clazz) throws IllegalAccessException, InstantiationException,
             NoSuchMethodException, InvocationTargetException, FileNotFoundException {
         if (clazz.getAnnotation(Component.class) == null) {
             throw new IllegalArgumentException("Class " + clazz.getSimpleName() + " don't have 'Component' annotation");
@@ -48,7 +46,6 @@ public class DependencyService {
         constructor.setAccessible(false);
         instanceClassMap.put(clazz.getName(), instanceClass);
         setProperty(clazz);
-
     }
 
     public void setProperty(Class<?> clazz) throws IllegalAccessException, FileNotFoundException {
@@ -57,11 +54,17 @@ public class DependencyService {
         if(clazz.isInterface()) {
             implClass = DependencyInject.getInstance().getImplClass(clazz);
         }
-        for (Field field : implClass.getDeclaredFields()) {
+
+        final List<Field> annotatedFields = Arrays.stream(implClass.getDeclaredFields())
+                .filter(i -> !i.getType().isPrimitive() && i.isAnnotationPresent(Value.class))
+                .collect(Collectors.toList());
+
+        for (Field field : annotatedFields) {
             Value annotation = field.getAnnotation(Value.class);
             String path = ClassLoader.getSystemClassLoader().getResource("application.properties").getPath();
             Stream<String> lines = new BufferedReader(new FileReader(path)).lines();
             Map<String, String> propertiesMap = lines.map(line -> line.split("=")).collect(toMap(arr -> arr[0], arr -> arr[1]));
+            lines.close();
             if (annotation != null) {
                 String value = propertiesMap.get(annotation.value());
                 field.setAccessible(true);
@@ -82,7 +85,7 @@ public class DependencyService {
             final Class<?> implClass = DependencyInject.getInstance().injection(field);
             if (implClass.isAnnotationPresent(Component.class) && !instanceClassMap.containsKey(implClass.getName())) {
                 final Object bufInstanceClass = this.instanceClass;
-                setVariable(implClass);
+                putIntoContext(implClass);
                 initConstructor();
                 this.instanceClass = bufInstanceClass;
             }

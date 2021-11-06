@@ -1,7 +1,5 @@
 package com.github.krishchik.whowithme.main.dao;
 
-
-
 import com.github.krishchik.whowithme.di.annotation.Component;
 import com.github.krishchik.whowithme.di.annotation.Value;
 
