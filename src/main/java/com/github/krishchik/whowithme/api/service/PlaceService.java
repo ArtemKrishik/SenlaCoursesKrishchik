@@ -6,14 +6,14 @@ import java.util.List;
 
 public interface PlaceService {
 
-    void createPlace(Place createdPlace);
+    void createPlace(Place createdPlace) throws Exception;
 
-    void updatePlace(Place updatedPlace);
+    void updatePlace(Place updatedPlace) throws Exception;
 
-    Place getPlaceById(Long placeId);
+    Place getPlaceById(Long placeId) throws Exception;
 
-    void deletePlace(Place deletedPlace);
+    void deletePlace(Place deletedPlace) throws Exception;
 
-    List<Place> getAllPlaces();
+    List<Place> getAllPlaces() throws Exception;
 
 }
