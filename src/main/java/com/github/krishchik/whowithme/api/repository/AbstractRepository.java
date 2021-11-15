@@ -6,16 +6,16 @@ import java.util.List;
 
 public interface AbstractRepository<T extends AbstractEntity> {
 
-    T getById(Long id);
+    T getById(Long id) throws Exception;
 
-    void save(T entity);
+    void save(T entity) throws Exception;
 
-    void update(T entity);
+    void update(T entity) throws Exception;
 
-    void delete(T entity);
+    void delete(Long id) throws Exception;
 
-    Long getMaxId();
 
-    List<T> getAll();
+
+    List<T> getAll() throws Exception;
 
 }

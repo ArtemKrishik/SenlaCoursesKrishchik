@@ -6,14 +6,14 @@ import java.util.List;
 
 public interface EventService {
 
-    void createEvent(Event createdEvent);
+    void createEvent(Event createdEvent) throws Exception;
 
-    void updateEvent(Event updatedEvent);
+    void updateEvent(Event updatedEvent) throws Exception;
 
-    Event getEventById(Long eventId);
+    Event getEventById(Long eventId) throws Exception;
 
-    void deleteEvent(Event deletedEvent);
+    void deleteEvent(Long id) throws Exception;
 
-    List<Event> getAllEvents();
+    List<Event> getAllEvents() throws Exception;
 
 }

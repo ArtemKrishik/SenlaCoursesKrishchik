@@ -6,13 +6,13 @@ import java.util.List;
 
 public interface UserService {
 
-    void createUser(User createdUser);
+    void createUser(User createdUser) throws Exception;
 
-    void updateUser(User updatedUser);
+    void updateUser(User updatedUser) throws Exception;
 
-    User getUserById(Long userId);
+    User getUserById(Long userId) throws Exception;
 
-    void deleteUser(User deletedUser);
+    void deleteUser(User deletedUser) throws Exception;
 
-    List<User> getAllUsers();
+    List<User> getAllUsers() throws Exception;
 }

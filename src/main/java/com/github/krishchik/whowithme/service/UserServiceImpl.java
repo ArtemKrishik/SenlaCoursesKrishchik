@@ -1,43 +1,51 @@
 package com.github.krishchik.whowithme.service;
 
+import com.github.krishchik.whowithme.annotation.Transactional;
 import com.github.krishchik.whowithme.api.repository.UserRepository;
 import com.github.krishchik.whowithme.api.service.UserService;
 import com.github.krishchik.whowithme.model.User;
-import org.springframework.stereotype.Service;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Service
+@Component
 public class UserServiceImpl implements UserService {
 
-    private final UserRepository userRepository;
-
-    public UserServiceImpl(UserRepository userRepository) {
-        this.userRepository = userRepository;
-    }
+    @Autowired
+    private UserRepository userRepository;
 
     @Override
-    public void createUser(User createdUser) {
+    @Transactional
+    public void createUser(User createdUser) throws Exception {
         userRepository.save(createdUser);
+        throw new RuntimeException();
+
     }
 
     @Override
-    public void updateUser(User updatedUser) {
+    @Transactional
+    public void updateUser(User updatedUser) throws Exception {
         userRepository.update(updatedUser);
     }
 
     @Override
-    public User getUserById(Long userId) {
+    @Transactional
+    public User getUserById(Long userId) throws Exception {
         return userRepository.getById(userId);
     }
 
+
     @Override
-    public void deleteUser(User deletedUser) {
-        userRepository.delete(deletedUser);
+    @Transactional
+    public void deleteUser(User deletedUser) throws Exception {
+        userRepository.delete(deletedUser.getId());
+
     }
 
     @Override
-    public List<User> getAllUsers() {
+    @Transactional
+    public List<User> getAllUsers() throws Exception {
         return userRepository.getAll();
     }
 }

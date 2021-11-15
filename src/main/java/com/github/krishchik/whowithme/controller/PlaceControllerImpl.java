@@ -1,6 +1,5 @@
 package com.github.krishchik.whowithme.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.github.krishchik.whowithme.model.Place;
 import com.github.krishchik.whowithme.service.PlaceServiceImpl;
 import com.github.krishchik.whowithme.util.JsonMapper;
@@ -17,27 +16,27 @@ public class PlaceControllerImpl {
         this.jsonMapper = jsonMapper;
     }
 
-    public void createPlace(String userJsonString) throws JsonProcessingException {
+    public void createPlace(String userJsonString) throws Exception {
         Place place = jsonMapper.convertToPlace(userJsonString);
         placeService.createPlace(place);
     }
 
-    public String getPlaceById(Long placeId) throws JsonProcessingException {
+    public String getPlaceById(Long placeId) throws Exception {
         Place place = placeService.getPlaceById(placeId);
         return jsonMapper.convertPlaceToJson(place);
     }
 
-    public void updatePlace(String placeJsonString) throws JsonProcessingException {
+    public void updatePlace(String placeJsonString) throws Exception {
         Place place = jsonMapper.convertToPlace(placeJsonString);
         placeService.updatePlace(place);
     }
 
-    public void deletePlace(String placeJsonString) throws JsonProcessingException {
+    public void deletePlace(String placeJsonString) throws Exception {
         Place place = jsonMapper.convertToPlace(placeJsonString);
         placeService.deletePlace(place);
     }
 
-    public String getAll() throws JsonProcessingException {
+    public String getAll() throws Exception {
         return jsonMapper.convertPlaceToJson(placeService.getAllPlaces());
     }
 
