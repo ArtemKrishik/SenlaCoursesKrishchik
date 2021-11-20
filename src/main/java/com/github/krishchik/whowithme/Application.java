@@ -4,14 +4,20 @@ import com.github.krishchik.whowithme.controller.UserControllerImpl;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
+import java.lang.management.ManagementFactory;
+import java.util.concurrent.TimeUnit;
+
+import com.sun.management.OperatingSystemMXBean;
+
 
 public class Application {
 
     public static void main(String[] args) throws Exception {
-        ApplicationContext applicationContext = new AnnotationConfigApplicationContext("com.github");
-        UserControllerImpl userController = applicationContext.getBean(UserControllerImpl.class);
-        String user1 = "{\"id\":2,\"login\":\"Nikita\",\"password\":\"22222\"}";
-        userController.createUser(user1);
+        //ApplicationContext applicationContext = new AnnotationConfigApplicationContext("com.github");
+        //UserControllerImpl userController = applicationContext.getBean(UserControllerImpl.class);
+        //String user1 = "{\"id\":2,\"login\":\"Nikita\",\"password\":\"22222\"}";
+       // userController.createUser(user1);
+
 
     }
 }

@@ -14,8 +14,6 @@ public interface AbstractRepository<T extends AbstractEntity> {
 
     void delete(Long id) throws Exception;
 
-
-
     List<T> getAll() throws Exception;
 
 }
