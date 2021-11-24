@@ -2,53 +2,40 @@ package com.github.krishchik.whowithme.repository;
 
 import com.github.krishchik.whowithme.api.repository.EventRepository;
 import com.github.krishchik.whowithme.model.Event;
+import com.github.krishchik.whowithme.model.User;
 import org.springframework.stereotype.Repository;
+import com.github.krishchik.whowithme.model.User_;
+import com.github.krishchik.whowithme.model.Event_;
 
-import java.util.ArrayList;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.*;
 import java.util.List;
 
-
 @Repository
-public class EventRepositoryImpl implements EventRepository {
-
-    private List<Event> repository = new ArrayList<>();
-
-    @Override
-    public Event getById(Long id) {
-        for (Event entity : repository) {
-            if(id.equals(entity.getId())) {
-                return entity;
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public void save(Event entity) {
-        repository.add(entity);
-    }
+public class EventRepositoryImpl extends AbstractRepositoryImpl<Event, Long> implements EventRepository {
 
 
 
     @Override
-    public void delete(Long id) {
-        repository.remove(id);
+    protected Class<Event> getEntityClass() {
+        return Event.class;
     }
-
 
     @Override
-    public List<Event> getAll() {
-        return new ArrayList<>(repository);
+    public List<Event> getEventsByPlace(Long placeId) {
+        String queryString = "select e from Event e join fetch e.place pl where e.id = :id";
+        TypedQuery<Event> query = entityManager.createQuery(queryString, Event.class);
+        query.setParameter("id", placeId);
+        return query.getResultList();
     }
-
 
     @Override
-    public void update(Event updatedEvent) {
-        Event event = getById(updatedEvent.getId());
-        event.setEventName(updatedEvent.getEventName());
-        event.setEventStatus(updatedEvent.getEventStatus());
-        event.setAgeLimit(updatedEvent.getAgeLimit());
-        event.setNumberOfPeople(updatedEvent.getNumberOfPeople());
+    public List<Event> getUsersEvents(User user) {
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Event> q = cb.createQuery(Event.class);
+        Root<Event> r = q.from(Event.class);
+        r.fetch(Event_.USERS, JoinType.LEFT);
+        q.where(cb.equal(r.get(User_.ID), user.getId()));
+        return  entityManager.createQuery(q).getResultList();
     }
-
 }

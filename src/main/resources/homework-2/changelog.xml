@@ -8,7 +8,7 @@
       http://www.liquibase.org/xml/ns/pro 
       http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.1.xsd"
       >
-    
+
     <changeSet id="homework-2-events-table" author="Artem Krishchik">
         <sqlFile encoding="utf8" path="./sql/01.create-events-table.sql" relativeToChangelogFile="true"/>
     </changeSet>
@@ -78,4 +78,25 @@
     <changeSet id="homework-2-add-index-events-fk2" author="Artem Krishchik">
         <sqlFile encoding="utf8" path="./sql/18.add-index-events-fk2.sql" relativeToChangelogFile="true"/>
     </changeSet>
+
+    <changeSet id="homework-2-profiles-table-data-insert" author="Artem Krishchik">
+        <sqlFile encoding="utf8" path="./sql/19.profiles-table-data-insert.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
+    <changeSet id="homework-2-roles-table-data-insert" author="Artem Krishchik">
+        <sqlFile encoding="utf8" path="./sql/20.roles-table-data-insert.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
+    <changeSet id="homework-2-users-table-data-insert" author="Artem Krishchik">
+        <sqlFile encoding="utf8" path="./sql/21.users-table-data-insert.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
+    <changeSet id="homework-2-places-table-data-insert" author="Artem Krishchik">
+        <sqlFile encoding="utf8" path="./sql/23.places-table-data-insert.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
+    <changeSet id="homework-2-events-table-data-insert" author="Artem Krishchik">
+        <sqlFile encoding="utf8" path="./sql/22.events-table-data-insert.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
 </databaseChangeLog> 

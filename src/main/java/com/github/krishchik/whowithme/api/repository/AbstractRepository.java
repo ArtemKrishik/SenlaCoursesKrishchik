@@ -4,15 +4,15 @@ import com.github.krishchik.whowithme.model.AbstractEntity;
 
 import java.util.List;
 
-public interface AbstractRepository<T extends AbstractEntity> {
+public interface AbstractRepository<T extends AbstractEntity, Id> {
 
-    T getById(Long id) throws Exception;
+    T getById(Id id) throws Exception;
 
     void save(T entity) throws Exception;
 
     void update(T entity) throws Exception;
 
-    void delete(Long id) throws Exception;
+    void delete(T entity) throws Exception;
 
     List<T> getAll() throws Exception;
 

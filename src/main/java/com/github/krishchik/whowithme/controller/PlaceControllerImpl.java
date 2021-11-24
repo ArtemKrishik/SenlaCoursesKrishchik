@@ -1,43 +1,49 @@
 package com.github.krishchik.whowithme.controller;
 
-import com.github.krishchik.whowithme.model.Place;
+import com.github.krishchik.whowithme.controller.dto.EventDto;
+import com.github.krishchik.whowithme.controller.dto.PlaceDto;
 import com.github.krishchik.whowithme.service.PlaceServiceImpl;
-import com.github.krishchik.whowithme.util.JsonMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import java.util.List;
 
 @Component
 public class PlaceControllerImpl {
 
+    @Autowired
     private final PlaceServiceImpl placeService;
-    private final JsonMapper jsonMapper;
 
-    public PlaceControllerImpl(PlaceServiceImpl placeService ,JsonMapper jsonMapper) {
+    public PlaceControllerImpl(PlaceServiceImpl placeService) {
         this.placeService = placeService;
-        this.jsonMapper = jsonMapper;
     }
 
-    public void createPlace(String userJsonString) throws Exception {
-        Place place = jsonMapper.convertToPlace(userJsonString);
-        placeService.createPlace(place);
+    public void createPlace(PlaceDto placeDto) throws Exception {
+        placeService.createPlace(placeDto);
     }
 
-    public String getPlaceById(Long placeId) throws Exception {
-        Place place = placeService.getPlaceById(placeId);
-        return jsonMapper.convertPlaceToJson(place);
+    public PlaceDto getPlaceById(Long placeId) throws Exception {
+        return placeService.getPlaceById(placeId);
     }
 
-    public void updatePlace(String placeJsonString) throws Exception {
-        Place place = jsonMapper.convertToPlace(placeJsonString);
-        placeService.updatePlace(place);
+    public void updatePlace(PlaceDto placeDto) throws Exception {
+        placeService.updatePlace(placeDto);
     }
 
-    public void deletePlace(String placeJsonString) throws Exception {
-        Place place = jsonMapper.convertToPlace(placeJsonString);
-        placeService.deletePlace(place);
+    public void deletePlace(PlaceDto placeDto) throws Exception {
+        placeService.deletePlace(placeDto);
     }
 
-    public String getAll() throws Exception {
-        return jsonMapper.convertPlaceToJson(placeService.getAllPlaces());
+    public List<PlaceDto> getAll() throws Exception {
+        return placeService.getAllPlaces();
+    }
+
+    public List<PlaceDto> getPlacesSortedByCapacity() throws Exception {
+        return placeService.getPlacesSortedByCapacity();
+    }
+
+    public List<PlaceDto> getThreeCheapestPlaces() throws Exception {
+        return placeService.getThreeCheapestPlaces();
     }
 
 }

@@ -1,18 +1,18 @@
 package com.github.krishchik.whowithme.api.service;
 
-import com.github.krishchik.whowithme.model.User;
+import com.github.krishchik.whowithme.controller.dto.UserDto;
 
 import java.util.List;
 
 public interface UserService {
 
-    void createUser(User createdUser) throws Exception;
+    void createUser(UserDto createdUser) throws Exception;
 
-    void updateUser(User updatedUser) throws Exception;
+    void updateUser(UserDto updatedUser) throws Exception;
 
-    User getUserById(Long userId) throws Exception;
+    UserDto getUserById(Long userId) throws Exception;
 
-    void deleteUser(User deletedUser) throws Exception;
+    void deleteUser(UserDto deletedUser) throws Exception;
 
-    List<User> getAllUsers() throws Exception;
+    List<UserDto> getAllUsers() throws Exception;
 }
