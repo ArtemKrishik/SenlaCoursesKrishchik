@@ -3,7 +3,9 @@ package com.github.krishchik.whowithme.service;
 import com.github.krishchik.whowithme.api.repository.UserRepository;
 import com.github.krishchik.whowithme.api.service.UserService;
 import com.github.krishchik.whowithme.controller.Mapper.Mapper;
+import com.github.krishchik.whowithme.controller.dto.ProfileDto;
 import com.github.krishchik.whowithme.controller.dto.UserDto;
+import com.github.krishchik.whowithme.model.Profile;
 import com.github.krishchik.whowithme.model.User;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,8 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
 
     private final Mapper<UserDto, User> userMapper;
+
+    private final Mapper<ProfileDto, Profile> profileMapper;
 
     @Override
     @Transactional
@@ -49,5 +53,11 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public List<UserDto> getAllUsers() throws Exception {
         return userMapper.listToDto(userRepository.getAll(), User.class);
+    }
+
+    @Override
+    @Transactional
+    public ProfileDto getUsersProfile(Long userId) {
+        return profileMapper.toDto(userRepository.getUsersProfile(userId), ProfileDto.class);
     }
 }

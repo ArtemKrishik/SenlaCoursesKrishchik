@@ -8,10 +8,12 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "users")
+@NamedEntityGraph(name = "user-profile-entity-graph",
+        attributeNodes = @NamedAttributeNode("profile")
+)
 public class User extends AbstractEntity{
 
     @Id
@@ -31,5 +33,12 @@ public class User extends AbstractEntity{
     @ManyToMany(mappedBy = "users")
     private List<Event> events;
 
-
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                '}';
+    }
 }

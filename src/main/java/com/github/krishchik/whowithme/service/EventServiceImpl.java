@@ -34,7 +34,15 @@ public class EventServiceImpl implements EventService {
     @Override
     @Transactional
     public List<EventDto> getEventsByPlace(Long placeId) {
-        return eventMapper.listToDto(eventRepository.getEventsByPlace(placeId),Event.class);
+
+        List<Event> events = eventRepository.getEventsByPlace(placeId);
+        EventDto eventDto = eventMapper.toDto(events.get(0),EventDto.class);
+        List<EventDto> eventDtoList = new ArrayList<>();
+        eventDtoList.add(eventDto);
+        return eventDtoList;
+
+
+        //return eventMapper.listToDto(eventRepository.getEventsByPlace(placeId),Event.class);
     }
 
     @Override

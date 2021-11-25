@@ -10,7 +10,6 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "events")
@@ -44,5 +43,16 @@ public class Event extends AbstractEntity{
     )
     private List<User> users;
 
-
+    @Override
+    public String toString() {
+        return "Event{" +
+                "id=" + id +
+                ", eventName='" + eventName + '\'' +
+                ", eventStatus=" + eventStatus +
+                ", numberOfPeople=" + numberOfPeople +
+                ", ageLimit=" + ageLimit +
+                ", date=" + date +
+                ", startTime=" + startTime +
+                '}';
+    }
 }

@@ -8,7 +8,6 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "places")
@@ -25,5 +24,12 @@ public class Place extends AbstractEntity{
     @OneToMany(mappedBy = "place")
     private List<Event> eventList;
 
-
+    @Override
+    public String toString() {
+        return "Place{" +
+                "id=" + id +
+                ", capacity=" + capacity +
+                ", price=" + price +
+                '}';
+    }
 }

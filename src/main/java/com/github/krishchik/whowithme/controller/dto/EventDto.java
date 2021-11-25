@@ -20,7 +20,8 @@ public class EventDto {
     private Integer ageLimit;
     private LocalDateTime date;
     private LocalDateTime startTime;
-    private User creator;
-    private Place place;
+    private UserDto creator;
+    private PlaceDto place;
+
 
 }

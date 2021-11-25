@@ -37,6 +37,8 @@ public abstract class AbstractRepositoryImpl<T extends AbstractEntity, Id> imple
 
     @Override
     public void delete(T entity) {
+
+
         entityManager.remove(entity);
     }
 

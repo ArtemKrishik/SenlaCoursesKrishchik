@@ -7,7 +7,6 @@ import javax.persistence.*;
 @Entity
 @Getter
 @Setter
-@ToString
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "profiles")
@@ -24,4 +23,13 @@ public class Profile {
     @OneToOne(mappedBy = "profile")
     private User user;
 
+    @Override
+    public String toString() {
+        return "Profile{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", age=" + age +
+                ", phoneNumber=" + phoneNumber +
+                '}';
+    }
 }

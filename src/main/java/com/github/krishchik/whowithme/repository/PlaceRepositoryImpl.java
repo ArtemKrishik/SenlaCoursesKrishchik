@@ -3,9 +3,7 @@ package com.github.krishchik.whowithme.repository;
 
 import com.github.krishchik.whowithme.api.repository.PlaceRepository;
 import com.github.krishchik.whowithme.model.Place;
-
 import org.springframework.stereotype.Repository;
-
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;

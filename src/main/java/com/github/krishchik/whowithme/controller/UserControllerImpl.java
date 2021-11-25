@@ -1,6 +1,7 @@
 package com.github.krishchik.whowithme.controller;
 
 import com.github.krishchik.whowithme.controller.dto.PlaceDto;
+import com.github.krishchik.whowithme.controller.dto.ProfileDto;
 import com.github.krishchik.whowithme.controller.dto.UserDto;
 import com.github.krishchik.whowithme.model.User;
 import com.github.krishchik.whowithme.service.UserServiceImpl;
@@ -36,5 +37,9 @@ public class UserControllerImpl {
 
     public List<UserDto> getAll() throws Exception {
         return userService.getAllUsers();
+    }
+
+    public ProfileDto getUsersProfile(Long userId) {
+        return userService.getUsersProfile(userId);
     }
 }

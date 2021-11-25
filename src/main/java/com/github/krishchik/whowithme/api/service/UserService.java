@@ -1,5 +1,6 @@
 package com.github.krishchik.whowithme.api.service;
 
+import com.github.krishchik.whowithme.controller.dto.ProfileDto;
 import com.github.krishchik.whowithme.controller.dto.UserDto;
 
 import java.util.List;
@@ -15,4 +16,6 @@ public interface UserService {
     void deleteUser(UserDto deletedUser) throws Exception;
 
     List<UserDto> getAllUsers() throws Exception;
+
+    ProfileDto getUsersProfile(Long userId);
 }
