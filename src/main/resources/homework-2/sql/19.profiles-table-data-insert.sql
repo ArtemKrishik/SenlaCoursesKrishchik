@@ -1,0 +1,1 @@
+insert into profiles (id, name, age, phone_number) values (1,'name', 11, 1111)

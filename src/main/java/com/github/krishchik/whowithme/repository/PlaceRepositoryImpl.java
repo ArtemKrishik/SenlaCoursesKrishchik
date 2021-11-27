@@ -1,56 +1,37 @@
 package com.github.krishchik.whowithme.repository;
 
+
 import com.github.krishchik.whowithme.api.repository.PlaceRepository;
 import com.github.krishchik.whowithme.model.Place;
 import org.springframework.stereotype.Repository;
-
-import java.util.ArrayList;
-import java.util.Collections;
+import javax.persistence.TypedQuery;
+import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Root;
 import java.util.List;
 
 @Repository
-public class PlaceRepositoryImpl implements PlaceRepository {
-
-
-    private List<Place> repository = new ArrayList<>();
+public class PlaceRepositoryImpl extends AbstractRepositoryImpl<Place, Long> implements PlaceRepository {
 
     @Override
-    public Place getById(Long id) {
-        for (Place entity : repository) {
-            if(id.equals(entity.getId())) {
-                return entity;
-            }
-        }
-        return null;
-    }
-
-    @Override
-    public void save(Place entity) {
-        repository.add(entity);
-    }
-
-
-
-    @Override
-    public void delete(Long id) {
-        repository.remove(id);
+    protected Class<Place> getEntityClass() {
+        return Place.class;
     }
 
 
     @Override
-    public List<Place> getAll() {
-        return new ArrayList<>(repository);
+    public List<Place> getPlacesSortedByCapacity() {
+        CriteriaBuilder cb = entityManager.getCriteriaBuilder();
+        CriteriaQuery<Place> cq = cb.createQuery(getEntityClass());
+        Root<Place> root = cq.from(getEntityClass());
+        CriteriaQuery<Place> all = cq.select(root).orderBy(cb.asc(root.get("capacity")));
+        TypedQuery<Place> allQuery = entityManager.createQuery(all);
+        return allQuery.getResultList();
     }
 
-
-
-
     @Override
-    public void update(Place updatedPlace) {
-        Place place = getById(updatedPlace.getId());
-        place.setPlaceName(updatedPlace.getPlaceName());
-        place.setCapacity(updatedPlace.getCapacity());
-        place.setPrice(updatedPlace.getPrice());
+    public List<Place> getThreeCheapestPlaces() {
+        return entityManager.createQuery("from Place order by price").setMaxResults(3).getResultList();
     }
 
 }

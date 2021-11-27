@@ -1,44 +1,45 @@
 package com.github.krishchik.whowithme.controller;
 
+import com.github.krishchik.whowithme.controller.dto.PlaceDto;
+import com.github.krishchik.whowithme.controller.dto.ProfileDto;
+import com.github.krishchik.whowithme.controller.dto.UserDto;
 import com.github.krishchik.whowithme.model.User;
 import com.github.krishchik.whowithme.service.UserServiceImpl;
-import com.github.krishchik.whowithme.util.JsonMapper;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
+@AllArgsConstructor
 public class UserControllerImpl {
 
     @Autowired
-    private UserServiceImpl userService;
-    @Autowired
-    private  JsonMapper jsonMapper;
+    private final UserServiceImpl userService;
 
 
-    public void createUser(String userJsonString) throws Exception {
-        User user = jsonMapper.convertToUser(userJsonString);
-        userService.createUser(user);
+    public void createUser(UserDto userDto) throws Exception {
+        userService.createUser(userDto);
     }
 
-    public String getUserById(Long userId) throws Exception {
-        User user = userService.getUserById(userId);
-       return jsonMapper.convertUserTOJson(user);
-
+    public UserDto getUserById(Long userId) throws Exception {
+        return userService.getUserById(userId);
     }
 
-    public void updateUser(String userJsonString) throws Exception {
-        User user = jsonMapper.convertToUser(userJsonString);
-        userService.updateUser(user);
+    public void updateUser(UserDto userDto) throws Exception {
+        userService.updateUser(userDto);
     }
 
-    public void deleteUser(String userJsonString) throws Exception {
-        User user = jsonMapper.convertToUser(userJsonString);
-        userService.deleteUser(user);
+    public void deleteUser(UserDto userDto) throws Exception {
+        userService.deleteUser(userDto);
     }
 
-    public String getAll() throws Exception {
-        return jsonMapper.convertUserTOJson(userService.getAllUsers());
+    public List<UserDto> getAll() throws Exception {
+        return userService.getAllUsers();
     }
 
-
+    public ProfileDto getUsersProfile(Long userId) {
+        return userService.getUsersProfile(userId);
+    }
 }

@@ -1,42 +1,50 @@
 package com.github.krishchik.whowithme.controller;
 
-import com.github.krishchik.whowithme.model.Event;
+import com.github.krishchik.whowithme.controller.dto.EventDto;
+import com.github.krishchik.whowithme.controller.dto.UserDto;
 import com.github.krishchik.whowithme.service.EventServiceImpl;
-import com.github.krishchik.whowithme.util.JsonMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 @Component
+
 public class EventControllerImpl {
 
+    @Autowired
     private final EventServiceImpl eventService;
-    private final JsonMapper jsonMapper;
 
-    public EventControllerImpl(EventServiceImpl eventService, JsonMapper jsonMapper) {
+    public EventControllerImpl(EventServiceImpl eventService) {
         this.eventService = eventService;
-        this.jsonMapper = jsonMapper;
     }
 
-    public void createEvent(String eventJsonString) throws Exception {
-        Event event = jsonMapper.convertToEvent(eventJsonString);
-        eventService.createEvent(event);
+    public void createEvent(EventDto eventDto) throws Exception {
+        eventService.createEvent(eventDto);
     }
 
-    public String getEventById(Long eventId) throws Exception {
-        Event event = eventService.getEventById(eventId);
-        return jsonMapper.convertEventToJson(event);
+    public EventDto getEventById(Long eventId) throws Exception {
+        return eventService.getEventById(eventId);
     }
 
-    public void updateEvent(String eventJsonString) throws Exception {
-        Event event = jsonMapper.convertToEvent(eventJsonString);
-        eventService.updateEvent(event);
+    public void updateEvent(EventDto eventDto) throws Exception {
+        eventService.updateEvent(eventDto);
     }
 
-    public void deleteEvent(Long id) throws Exception {
-        eventService.deleteEvent(id);
+    public void deleteEvent(EventDto eventDto) throws Exception {
+        eventService.deleteEvent(eventDto);
     }
 
-    public String getAll() throws Exception {
-        return jsonMapper.convertEventToJson(eventService.getAllEvents());
+    public List<EventDto> getAll() throws Exception {
+        return eventService.getAllEvents();
+    }
+
+    public List<EventDto> getEventsByPlace(Long placeId) {
+        return eventService.getEventsByPlace(placeId);
+    }
+
+    public List<EventDto> getUsersEvents(UserDto userDto) {
+        return eventService.getUsersEvents(userDto);
     }
 
 }

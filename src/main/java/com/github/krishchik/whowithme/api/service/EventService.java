@@ -1,19 +1,25 @@
 package com.github.krishchik.whowithme.api.service;
 
+import com.github.krishchik.whowithme.controller.dto.EventDto;
+import com.github.krishchik.whowithme.controller.dto.UserDto;
 import com.github.krishchik.whowithme.model.Event;
 
 import java.util.List;
 
 public interface EventService {
 
-    void createEvent(Event createdEvent) throws Exception;
+    void createEvent(EventDto createdEvent) throws Exception;
 
-    void updateEvent(Event updatedEvent) throws Exception;
+    void updateEvent(EventDto updatedEvent) throws Exception;
 
-    Event getEventById(Long eventId) throws Exception;
+    EventDto getEventById(Long eventId) throws Exception;
 
-    void deleteEvent(Long id) throws Exception;
+    void deleteEvent(EventDto eventDto) throws Exception;
 
-    List<Event> getAllEvents() throws Exception;
+    List<EventDto> getAllEvents() throws Exception;
+
+    List<EventDto> getEventsByPlace(Long placeId);
+
+    List<EventDto> getUsersEvents(UserDto userDto);
 
 }
