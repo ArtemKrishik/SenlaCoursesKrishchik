@@ -10,7 +10,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "profiles")
-public class Profile {
+public class Profile extends AbstractEntity{
 
     @Id
     private Long id;
@@ -20,7 +20,7 @@ public class Profile {
     private Integer age;
     @Column(name = "phone_number")
     private Long phoneNumber;
-    @OneToOne(mappedBy = "profile")
+    @OneToOne(mappedBy = "profile", cascade = CascadeType.ALL)
     private User user;
 
     @Override

@@ -8,6 +8,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "places")
@@ -21,7 +22,7 @@ public class Place extends AbstractEntity{
     private Integer capacity;
     @Column(name = "price")
     private Integer price;
-    @OneToMany(mappedBy = "place")
+    @OneToMany(mappedBy = "place", cascade = CascadeType.ALL)
     private List<Event> eventList;
 
     @Override

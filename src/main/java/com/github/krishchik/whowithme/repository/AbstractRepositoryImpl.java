@@ -37,19 +37,19 @@ public abstract class AbstractRepositoryImpl<T extends AbstractEntity, Id> imple
 
     @Override
     public void delete(T entity) {
-
-
-        entityManager.remove(entity);
+        entityManager.remove(entityManager.find(getEntityClass(), entity.getId()));
     }
 
     @Override
     public List<T> getAll() {
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<T> cq = cb.createQuery(getEntityClass());
-        Root<T> rootEntry = cq.from(getEntityClass());
+        /*Root<T> rootEntry = cq.from(getEntityClass());
         CriteriaQuery<T> all = cq.select(rootEntry);
         TypedQuery<T> allQuery = entityManager.createQuery(all);
-        return allQuery.getResultList();
+        return allQuery.getResultList();*/
+        cq.from(getEntityClass());
+        return entityManager.createQuery(cq).getResultList();
     }
 
     protected abstract Class<T> getEntityClass();

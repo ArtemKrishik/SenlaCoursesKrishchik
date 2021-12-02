@@ -11,6 +11,7 @@ import java.util.Map;
 public class UserRepositoryImpl extends AbstractRepositoryImpl<User, Long> implements UserRepository {
 
     public static final String JAVAX_PERSISTENCE_FETCHGRAPH = "javax.persistence.fetchgraph";
+    public static final String USER_PROFILE_ENTITY_GRAPH = "user-profile-entity-graph";
 
     @Override
     protected Class<User> getEntityClass() {
@@ -19,7 +20,7 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl<User, Long> imple
 
     @Override
     public Profile getUsersProfile(Long userId) {
-        EntityGraph graph = entityManager.getEntityGraph("user-profile-entity-graph");
+        EntityGraph graph = entityManager.getEntityGraph(USER_PROFILE_ENTITY_GRAPH);
         Map<String, Object> properties = Map.of(JAVAX_PERSISTENCE_FETCHGRAPH, graph);
         return entityManager.find(User.class, userId, properties).getProfile();
     }

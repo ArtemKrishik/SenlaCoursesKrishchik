@@ -9,6 +9,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import java.util.List;
+import com.github.krishchik.whowithme.model.Place_;
 
 @Repository
 public class PlaceRepositoryImpl extends AbstractRepositoryImpl<Place, Long> implements PlaceRepository {
@@ -24,7 +25,7 @@ public class PlaceRepositoryImpl extends AbstractRepositoryImpl<Place, Long> imp
         CriteriaBuilder cb = entityManager.getCriteriaBuilder();
         CriteriaQuery<Place> cq = cb.createQuery(getEntityClass());
         Root<Place> root = cq.from(getEntityClass());
-        CriteriaQuery<Place> all = cq.select(root).orderBy(cb.asc(root.get("capacity")));
+        CriteriaQuery<Place> all = cq.select(root).orderBy(cb.asc(root.get(Place_.capacity)));
         TypedQuery<Place> allQuery = entityManager.createQuery(all);
         return allQuery.getResultList();
     }
