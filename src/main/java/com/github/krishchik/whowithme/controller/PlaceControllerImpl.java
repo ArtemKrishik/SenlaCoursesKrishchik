@@ -28,9 +28,9 @@ public class PlaceControllerImpl {
         placeService.createPlace(placeDto);
     }
 
-    @GetMapping(value = "/{placeId}")
-    public PlaceDto getPlaceById(@PathVariable Long placeId) throws Exception {
-        return placeService.getPlaceById(placeId);
+    @GetMapping(value = "/{id}")
+    public PlaceDto getPlaceById(@PathVariable Long id) throws Exception {
+        return placeService.getPlaceById(id);
     }
 
     @PutMapping

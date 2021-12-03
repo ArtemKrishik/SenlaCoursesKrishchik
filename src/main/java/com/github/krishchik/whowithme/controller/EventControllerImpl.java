@@ -27,9 +27,9 @@ public class EventControllerImpl {
         eventService.createEvent(eventDto);
     }
 
-    @GetMapping(value = "/{eventId}")
-    public EventDto getEventById(@PathVariable Long eventId) throws Exception {
-        return eventService.getEventById(eventId);
+    @GetMapping(value = "/{id}")
+    public EventDto getEventById(@PathVariable Long id) throws Exception {
+        return eventService.getEventById(id);
     }
 
 
@@ -48,9 +48,9 @@ public class EventControllerImpl {
         return eventService.getAllEvents();
     }
 
-    @GetMapping(value = "/eventsByPlace/{placeId}")
-    public List<EventDto> getEventsByPlace(@RequestParam Long placeId) {
-        return eventService.getEventsByPlace(placeId);
+    @GetMapping(value = "/eventsByPlace/{id}")
+    public List<EventDto> getEventsByPlace(@RequestParam Long id) {
+        return eventService.getEventsByPlace(id);
     }
 
     @GetMapping(value = "usersEvents")

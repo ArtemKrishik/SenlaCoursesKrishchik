@@ -16,8 +16,6 @@ public class Place extends AbstractEntity{
 
     @Id
     private Long id;
-    //@Column(name = "place_name") //dobavit v basy
-    //private String placeName;
     @Column(name = "capacity")
     private Integer capacity;
     @Column(name = "price")

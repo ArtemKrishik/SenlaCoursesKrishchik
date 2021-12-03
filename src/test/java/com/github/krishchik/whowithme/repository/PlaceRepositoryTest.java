@@ -6,17 +6,14 @@ import com.github.krishchik.whowithme.model.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 
-import javax.transaction.Transactional;
 
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@Transactional
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
 @ContextConfiguration(classes = { PlaceRepositoryImpl.class, EventRepositoryImpl.class})
 public class PlaceRepositoryTest extends RepositoryTest {
@@ -24,7 +21,6 @@ public class PlaceRepositoryTest extends RepositoryTest {
     @Autowired
     PlaceRepository placeRepository;
 
-    @Mock
     private Place place;
 
     @BeforeAll

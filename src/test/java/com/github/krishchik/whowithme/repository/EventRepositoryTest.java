@@ -18,7 +18,6 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@Transactional
 @ContextConfiguration(classes = { PlaceRepositoryImpl.class, EventRepositoryImpl.class, UserRepositoryImpl.class, ProfileRepositoryImpl.class, RoleRepositoryImpl.class})
 public class EventRepositoryTest extends RepositoryTest {
 
@@ -33,15 +32,11 @@ public class EventRepositoryTest extends RepositoryTest {
     @Autowired
     RoleRepository roleRepository;
 
-    @Mock
+
     private Event event1;
-    @Mock
     private User user;
-    @Mock
     private Profile profile;
-    @Mock
     private Role role;
-    @Mock
     private Place place1;
 
     @BeforeAll

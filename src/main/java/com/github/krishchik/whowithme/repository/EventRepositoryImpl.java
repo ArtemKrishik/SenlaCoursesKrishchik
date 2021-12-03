@@ -9,9 +9,11 @@ import com.github.krishchik.whowithme.model.Event_;
 
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.*;
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
+@Transactional
 public class EventRepositoryImpl extends AbstractRepositoryImpl<Event, Long> implements EventRepository {
 
 

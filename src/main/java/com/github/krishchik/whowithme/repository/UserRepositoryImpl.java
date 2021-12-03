@@ -5,9 +5,11 @@ import com.github.krishchik.whowithme.model.Profile;
 import com.github.krishchik.whowithme.model.User;
 import org.springframework.stereotype.Repository;
 import javax.persistence.EntityGraph;
+import javax.transaction.Transactional;
 import java.util.Map;
 
 @Repository
+@Transactional
 public class UserRepositoryImpl extends AbstractRepositoryImpl<User, Long> implements UserRepository {
 
     public static final String JAVAX_PERSISTENCE_FETCHGRAPH = "javax.persistence.fetchgraph";

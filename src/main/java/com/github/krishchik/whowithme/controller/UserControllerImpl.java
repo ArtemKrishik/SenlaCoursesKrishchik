@@ -26,9 +26,9 @@ public class UserControllerImpl {
         userService.createUser(userDto);
     }
 
-    @GetMapping(value = "/{userId}")
-    public UserDto getUserById(@PathVariable Long userId) throws Exception {
-        return userService.getUserById(userId);
+    @GetMapping(value = "/{id}")
+    public UserDto getUserById(@PathVariable Long id) throws Exception {
+        return userService.getUserById(id);
     }
 
     @PutMapping
@@ -45,8 +45,8 @@ public class UserControllerImpl {
         return userService.getAllUsers();
     }
 
-    @GetMapping(value = "/profile/{userId}")
-    public ProfileDto getUsersProfile(@PathVariable Long userId) {
-        return userService.getUsersProfile(userId);
+    @GetMapping(value = "/{id}/profile")
+    public ProfileDto getUsersProfile(@PathVariable Long id) {
+        return userService.getUsersProfile(id);
     }
 }

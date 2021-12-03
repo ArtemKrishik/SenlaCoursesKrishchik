@@ -20,7 +20,7 @@ public class Profile extends AbstractEntity{
     private Integer age;
     @Column(name = "phone_number")
     private Long phoneNumber;
-    @OneToOne(mappedBy = "profile", cascade = CascadeType.ALL)
+    @OneToOne(mappedBy = "profile")
     private User user;
 
     @Override

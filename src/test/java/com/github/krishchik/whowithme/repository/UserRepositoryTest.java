@@ -5,22 +5,16 @@ import com.github.krishchik.whowithme.api.repository.ProfileRepository;
 import com.github.krishchik.whowithme.api.repository.RoleRepository;
 import com.github.krishchik.whowithme.api.repository.UserRepository;
 import com.github.krishchik.whowithme.model.*;
-import org.hibernate.LazyInitializationException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
-
-import javax.transaction.Transactional;
-
-import java.time.LocalDateTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@Transactional
 @ContextConfiguration(classes = { UserRepositoryImpl.class, ProfileRepositoryImpl.class, RoleRepositoryImpl.class })
 public class UserRepositoryTest extends RepositoryTest {
 
@@ -31,11 +25,8 @@ public class UserRepositoryTest extends RepositoryTest {
     @Autowired
     private RoleRepository roleRepository;
 
-    @Mock
     private User user;
-    @Mock
     private Profile profile;
-    @Mock
     private Role role;
 
 
