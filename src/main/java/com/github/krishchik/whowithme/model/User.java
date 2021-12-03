@@ -8,6 +8,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "users")
@@ -22,7 +23,7 @@ public class User extends AbstractEntity{
     private String login;
     @Column(name = "password")
     private String password;
-    @OneToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
     @JoinColumn(name = "profile_id")
     private Profile profile;
     @OneToMany(mappedBy = "users")
@@ -30,7 +31,12 @@ public class User extends AbstractEntity{
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id")
     private Role role;
-    @ManyToMany(mappedBy = "users")
+    @ManyToMany
+    @JoinTable(
+            name = "users_events",
+            joinColumns = @JoinColumn (name = "user_id"),
+            inverseJoinColumns = @JoinColumn (name = "event_id")
+    )
     private List<Event> events;
 
     @Override

@@ -11,7 +11,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "roles")
-public class Role {
+public class Role extends AbstractEntity {
 
     @Id
     private Long id;

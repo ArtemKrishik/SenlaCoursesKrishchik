@@ -8,6 +8,10 @@ import com.github.krishchik.whowithme.controller.dto.PlaceDto;
 import com.github.krishchik.whowithme.model.Event;
 import com.github.krishchik.whowithme.model.Place;
 import com.github.krishchik.whowithme.model.User;
+import com.github.krishchik.whowithme.service.converter.EventConverter;
+import com.github.krishchik.whowithme.service.converter.PlaceConverter;
+import com.github.krishchik.whowithme.service.exception.OperationException;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,66 +20,59 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class PlaceServiceImpl implements PlaceService {
 
     @Autowired
     private final PlaceRepository placeRepository;
-
-    private final Mapper<PlaceDto, Place> placeMapper;
-
-    private final Mapper<EventDto, Event> eventMapper;
-
-    public PlaceServiceImpl(PlaceRepository placeRepository, Mapper<PlaceDto, Place> placeMapper, Mapper<EventDto, Event> eventMapper) {
-        this.placeRepository = placeRepository;
-        this.placeMapper = placeMapper;
-        this.eventMapper = eventMapper;
-    }
-
+    private final PlaceConverter placeConverter;
 
     @Override
     @Transactional
     public void createPlace(PlaceDto placeDto) throws Exception {
-        placeRepository.save(placeMapper.toEntity(placeDto, Place.class));
+        placeRepository.save(placeConverter.toEntity(placeDto));
     }
 
     @Override
     @Transactional
     public void updatePlace(PlaceDto placeDto) throws Exception {
-        placeRepository.update(placeMapper.toEntity(placeDto, Place.class));
+        Place placeToChange = placeRepository.getById(placeDto.getId());
+        if(placeToChange == null) throw new OperationException("Incorrect input when tryin change place");
+        placeToChange.setPrice(placeDto.getPrice());
+        placeToChange.setCapacity(placeDto.getCapacity());
+        placeRepository.update(placeToChange);
     }
 
     @Override
     @Transactional
     public PlaceDto getPlaceById(Long placeId) throws Exception {
-
         Place place = placeRepository.getById(placeId);
-        PlaceDto placeDto = placeMapper.toDto(place, PlaceDto.class);
-        return placeDto;
-
+        if(place == null) throw new OperationException("place with id "+placeId+" wasn`t found");
+        return placeConverter.toDto(place);
     }
 
     @Override
     @Transactional
     public void deletePlace(PlaceDto placeDto) throws Exception {
-        placeRepository.delete(placeRepository.getById(placeMapper.toEntity(placeDto, Place.class).getId()));
+        placeRepository.delete(placeConverter.toEntity(placeDto));
     }
 
     @Override
     @Transactional
     public List<PlaceDto> getAllPlaces() throws Exception {
-        return placeMapper.listToDto(placeRepository.getAll(), Place.class);
+        return placeConverter.listToDto(placeRepository.getAll());
     }
 
     @Override
     @Transactional
     public List<PlaceDto> getPlacesSortedByCapacity() {
-        return placeMapper.listToDto(placeRepository.getPlacesSortedByCapacity(), Place.class);
+        return placeConverter.listToDto(placeRepository.getPlacesSortedByCapacity());
     }
 
     @Override
     @Transactional
     public List<PlaceDto> getThreeCheapestPlaces() {
-        return placeMapper.listToDto(placeRepository.getThreeCheapestPlaces(), Place.class);
+        return placeConverter.listToDto(placeRepository.getThreeCheapestPlaces());
     }
 
 }

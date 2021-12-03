@@ -10,7 +10,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "profiles")
-public class Profile {
+public class Profile extends AbstractEntity{
 
     @Id
     private Long id;

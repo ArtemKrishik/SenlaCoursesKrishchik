@@ -8,38 +8,45 @@ import com.github.krishchik.whowithme.service.UserServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @Component
 @AllArgsConstructor
+@RestController
+@RequestMapping("/users")
 public class UserControllerImpl {
 
     @Autowired
     private final UserServiceImpl userService;
 
-
-    public void createUser(UserDto userDto) throws Exception {
+    @PostMapping
+    public void createUser(@RequestBody UserDto userDto) throws Exception {
         userService.createUser(userDto);
     }
 
-    public UserDto getUserById(Long userId) throws Exception {
-        return userService.getUserById(userId);
+    @GetMapping(value = "/{id}")
+    public UserDto getUserById(@PathVariable Long id) throws Exception {
+        return userService.getUserById(id);
     }
 
-    public void updateUser(UserDto userDto) throws Exception {
+    @PutMapping
+    public void updateUser(@RequestBody UserDto userDto) throws Exception {
         userService.updateUser(userDto);
     }
 
-    public void deleteUser(UserDto userDto) throws Exception {
+    @DeleteMapping
+    public void deleteUser(@RequestBody UserDto userDto) throws Exception {
         userService.deleteUser(userDto);
     }
-
+    @GetMapping
     public List<UserDto> getAll() throws Exception {
         return userService.getAllUsers();
     }
 
-    public ProfileDto getUsersProfile(Long userId) {
-        return userService.getUsersProfile(userId);
+    @GetMapping(value = "/{id}/profile")
+    public ProfileDto getUsersProfile(@PathVariable Long id) {
+        return userService.getUsersProfile(id);
     }
 }

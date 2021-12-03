@@ -1,7 +1,6 @@
 package com.github.krishchik.whowithme.controller.dto;
 
-import com.github.krishchik.whowithme.model.Profile;
-import com.github.krishchik.whowithme.model.Role;
+
 import lombok.*;
 
 @Data
@@ -9,6 +8,7 @@ import lombok.*;
 @AllArgsConstructor
 @Getter
 @Setter
+@Builder
 public class UserDto {
 
     private Long id;

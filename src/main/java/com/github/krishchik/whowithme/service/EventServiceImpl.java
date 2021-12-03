@@ -8,6 +8,10 @@ import com.github.krishchik.whowithme.controller.dto.UserDto;
 import com.github.krishchik.whowithme.model.Event;
 import com.github.krishchik.whowithme.model.Place;
 import com.github.krishchik.whowithme.model.User;
+import com.github.krishchik.whowithme.service.converter.EventConverter;
+import com.github.krishchik.whowithme.service.converter.UserConverter;
+import com.github.krishchik.whowithme.service.exception.OperationException;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,69 +20,61 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class EventServiceImpl implements EventService {
 
     @Autowired
     private final EventRepository eventRepository;
-
-    private final Mapper<EventDto, Event> eventMapper;
-
-    private final Mapper<UserDto, User> userMapper;
-
-    public EventServiceImpl(EventRepository eventRepository, Mapper<EventDto, Event> eventMapper, Mapper<UserDto, User> userMapper) {
-        this.eventRepository = eventRepository;
-        this.eventMapper = eventMapper;
-        this.userMapper = userMapper;
-    }
+    private final EventConverter eventConverter;
+    private final UserConverter userConverter;
 
     @Override
     @Transactional
     public List<EventDto> getEventsByPlace(Long placeId) {
-
-        List<Event> events = eventRepository.getEventsByPlace(placeId);
-        EventDto eventDto = eventMapper.toDto(events.get(0),EventDto.class);
-        List<EventDto> eventDtoList = new ArrayList<>();
-        eventDtoList.add(eventDto);
-        return eventDtoList;
-
-
-        //return eventMapper.listToDto(eventRepository.getEventsByPlace(placeId),Event.class);
+        return eventConverter.listToDto(eventRepository.getEventsByPlace(placeId));
     }
 
     @Override
     @Transactional
     public List<EventDto> getUsersEvents(UserDto userDto) {
-        return eventMapper.listToDto(eventRepository.getUsersEvents(userMapper.toEntity(userDto, User.class)),EventDto.class);
+        return eventConverter.listToDto(eventRepository.getUsersEvents(userConverter.toEntity(userDto)));
     }
-
 
     @Override
     @Transactional
     public void createEvent(EventDto eventDto) throws Exception {
-        eventRepository.save(eventMapper.toEntity(eventDto, Event.class));
+        eventRepository.save(eventConverter.toEntity(eventDto));
     }
 
     @Override
     @Transactional
     public void updateEvent(EventDto eventDto) throws Exception {
-        eventRepository.update(eventMapper.toEntity(eventDto, Event.class));
+        Event eventToChange = eventRepository.getById(eventDto.getId());
+        if(eventToChange == null) throw new OperationException("Incorrect input when tryin change user");
+        eventToChange.setEventName(eventDto.getEventName());
+        eventToChange.setEventStatus(eventDto.getEventStatus());
+        eventToChange.setAgeLimit(eventDto.getAgeLimit());
+        eventToChange.setNumberOfPeople(eventDto.getNumberOfPeople());
+        eventRepository.update(eventToChange);
     }
 
     @Override
     @Transactional
     public EventDto getEventById(Long eventId) throws Exception {
-        return eventMapper.toDto(eventRepository.getById(eventId), EventDto.class);
+        Event event = eventRepository.getById(eventId);
+        if(event == null) throw new OperationException("event with id "+eventId+" wasn`t found");
+        return eventConverter.toDto(event);
     }
 
     @Override
     @Transactional
     public void deleteEvent(EventDto eventDto) throws Exception {
-        eventRepository.delete(eventRepository.getById(eventMapper.toEntity(eventDto, Event.class).getId()));
+        eventRepository.delete(eventConverter.toEntity(eventDto));
     }
 
     @Override
     @Transactional
     public List<EventDto> getAllEvents() throws Exception {
-        return eventMapper.listToDto(eventRepository.getAll(), Event.class);
+        return eventConverter.listToDto(eventRepository.getAll());
     }
 }

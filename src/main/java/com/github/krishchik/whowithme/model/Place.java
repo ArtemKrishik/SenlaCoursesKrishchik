@@ -8,6 +8,7 @@ import java.util.List;
 @Entity
 @Getter
 @Setter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "places")
@@ -15,13 +16,11 @@ public class Place extends AbstractEntity{
 
     @Id
     private Long id;
-    //@Column(name = "place_name") //dobavit v basy
-    //private String placeName;
     @Column(name = "capacity")
     private Integer capacity;
     @Column(name = "price")
     private Integer price;
-    @OneToMany(mappedBy = "place")
+    @OneToMany(mappedBy = "place", cascade = CascadeType.ALL)
     private List<Event> eventList;
 
     @Override
