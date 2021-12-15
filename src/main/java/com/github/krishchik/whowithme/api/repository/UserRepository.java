@@ -10,4 +10,5 @@ public interface UserRepository extends AbstractRepository<User, Long>{
 
     Profile getUsersProfile(Long userId);
 
+    User getUserByLogin(String login);
 }

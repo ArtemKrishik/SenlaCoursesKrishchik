@@ -1,6 +1,6 @@
 package com.github.krishchik.whowithme;
 
-import com.github.krishchik.whowithme.util.DatabaseConfiguration;
+import com.github.krishchik.whowithme.config.DatabaseConfiguration;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;

@@ -1,6 +1,6 @@
 package com.github.krishchik.whowithme;
 
-import com.github.krishchik.whowithme.util.WebConfiguration;
+import com.github.krishchik.whowithme.config.WebConfiguration;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;

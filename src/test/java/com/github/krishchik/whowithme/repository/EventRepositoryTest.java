@@ -91,12 +91,28 @@ public class EventRepositoryTest extends RepositoryTest {
 
     @Test
     void shouldGetEventByIdCorrect() throws Exception {
+        placeRepository.save(place1);
+        profileRepository.save(profile);
+        roleRepository.save(role);
+        user.setProfile(profile);
+        user.setRole(role);
+        userRepository.save(user);
+        event1.setPlace(place1);
+        event1.setCreator(user);
         eventRepository.save(event1);
         eventRepository.getById(1l);
         assertEquals(1l, eventRepository.getById(1l).getId());
     }
 
     @Test void shouldDeleteEventCorrect() throws Exception {
+        placeRepository.save(place1);
+        profileRepository.save(profile);
+        roleRepository.save(role);
+        user.setProfile(profile);
+        user.setRole(role);
+        userRepository.save(user);
+        event1.setPlace(place1);
+        event1.setCreator(user);
         eventRepository.save(event1);
         eventRepository.delete(event1);
         assertNull(eventRepository.getById(1l));
@@ -121,7 +137,16 @@ public class EventRepositoryTest extends RepositoryTest {
 
     @Test
     public void shouldUpdateEventCorrect() throws Exception {
+        placeRepository.save(place1);
+        profileRepository.save(profile);
+        roleRepository.save(role);
+        user.setProfile(profile);
+        user.setRole(role);
+        userRepository.save(user);
+        event1.setPlace(place1);
+        event1.setCreator(user);
         eventRepository.save(event1);
+
         Event updatedEvent = eventRepository.getById(1l);
         updatedEvent.setEventName("newName");
         eventRepository.update(updatedEvent);

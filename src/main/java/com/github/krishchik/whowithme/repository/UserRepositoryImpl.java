@@ -27,5 +27,11 @@ public class UserRepositoryImpl extends AbstractRepositoryImpl<User, Long> imple
         return entityManager.find(User.class, userId, properties).getProfile();
     }
 
+    @Override
+    public User getUserByLogin(String login) {
+        String SELECT_USER_BY_LOGIN = "from User where login =:login";
+        return (User) entityManager.createQuery(SELECT_USER_BY_LOGIN).setParameter("login", login).getSingleResult();
+    }
+
 
 }

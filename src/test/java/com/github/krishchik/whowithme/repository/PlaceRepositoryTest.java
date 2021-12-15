@@ -34,7 +34,8 @@ public class PlaceRepositoryTest extends RepositoryTest {
     }
 
 
-    @Test void shouldDeletePlaceCorrect() throws Exception {
+    @Test
+    void shouldDeletePlaceCorrect() throws Exception {
         placeRepository.save(place);
         placeRepository.delete(place);
         assertNull(placeRepository.getById(1l));

@@ -23,12 +23,12 @@ public class User extends AbstractEntity{
     private String login;
     @Column(name = "password")
     private String password;
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "profile_id")
     private Profile profile;
     @OneToMany(mappedBy = "users")
     private List<Event> organizedEvents;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "role_id")
     private Role role;
     @ManyToMany

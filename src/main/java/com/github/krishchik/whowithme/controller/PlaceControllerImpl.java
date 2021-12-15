@@ -1,6 +1,5 @@
 package com.github.krishchik.whowithme.controller;
 
-import com.github.krishchik.whowithme.controller.dto.EventDto;
 import com.github.krishchik.whowithme.controller.dto.PlaceDto;
 import com.github.krishchik.whowithme.service.PlaceServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,27 +22,27 @@ public class PlaceControllerImpl {
         this.placeService = placeService;
     }
 
-    @PostMapping
+    @PostMapping(value = "/admin")
     public void createPlace(@RequestBody PlaceDto placeDto) throws Exception {
         placeService.createPlace(placeDto);
     }
 
-    @GetMapping(value = "/{id}")
+    @GetMapping(value = "user/{id}")
     public PlaceDto getPlaceById(@PathVariable Long id) throws Exception {
         return placeService.getPlaceById(id);
     }
 
-    @PutMapping
+    @PutMapping(value = "/admin")
     public void updatePlace(@RequestBody PlaceDto placeDto) throws Exception {
         placeService.updatePlace(placeDto);
     }
 
-    @DeleteMapping
+    @DeleteMapping(value = "/admin")
     public void deletePlace(@RequestBody PlaceDto placeDto) throws Exception {
         placeService.deletePlace(placeDto);
     }
 
-    @GetMapping
+    @GetMapping(value = "/admin")
     public ResponseEntity<List<PlaceDto>> getAll() throws Exception {
         return new ResponseEntity<>(placeService.getAllPlaces(), HttpStatus.OK);
     }

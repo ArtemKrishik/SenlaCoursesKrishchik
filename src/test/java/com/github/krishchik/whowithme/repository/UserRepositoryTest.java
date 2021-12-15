@@ -5,6 +5,7 @@ import com.github.krishchik.whowithme.api.repository.ProfileRepository;
 import com.github.krishchik.whowithme.api.repository.RoleRepository;
 import com.github.krishchik.whowithme.api.repository.UserRepository;
 import com.github.krishchik.whowithme.model.*;
+import org.hibernate.LazyInitializationException;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
@@ -48,7 +49,12 @@ public class UserRepositoryTest extends RepositoryTest {
 
     }
 
-    @Test void shouldDeleteUserCorrect() throws Exception {
+    @Test
+    void shouldDeleteUserCorrect() throws Exception {
+        profileRepository.save(profile);
+        roleRepository.save(role);
+        user.setProfile(profile);
+        user.setRole(role);
         userRepository.save(user);
         userRepository.delete(user);
         assertNull(userRepository.getById(2l));
@@ -56,6 +62,10 @@ public class UserRepositoryTest extends RepositoryTest {
 
     @Test
     public void shouldFindUserByIdCorrect() throws Exception {
+        profileRepository.save(profile);
+        roleRepository.save(role);
+        user.setProfile(profile);
+        user.setRole(role);
         userRepository.save(user);
         final User potentialUser = userRepository.getById(2l);
         assertEquals(user.getId(), potentialUser.getId());
@@ -64,9 +74,14 @@ public class UserRepositoryTest extends RepositoryTest {
 
     @Test
     public void shouldFinishWithNullPointerException() throws Exception {
+
+        profileRepository.save(profile);
+        roleRepository.save(role);
+        user.setProfile(profile);
+        user.setRole(role);
         userRepository.save(user);
         assertThrows(
-                NullPointerException.class,
+                LazyInitializationException.class,
                 () -> userRepository.getById(2l).getRole().getName()
         );
     }
@@ -74,8 +89,9 @@ public class UserRepositoryTest extends RepositoryTest {
     @Test
     public void shouldGiveUsersProfileCorrect() throws Exception {
         profileRepository.save(profile);
+        roleRepository.save(role);
         user.setProfile(profile);
-        profile.setUser(user);
+        user.setRole(role);
         userRepository.save(user);
         assertEquals(userRepository.getUsersProfile(2l).getId(), 1l);
     }
@@ -95,6 +111,10 @@ public class UserRepositoryTest extends RepositoryTest {
 
     @Test
     public void shouldUpdateUserCorrect() throws Exception {
+        profileRepository.save(profile);
+        roleRepository.save(role);
+        user.setProfile(profile);
+        user.setRole(role);
         userRepository.save(user);
         User updatedUser = userRepository.getById(2l);
         updatedUser.setLogin("newLogin");

@@ -70,4 +70,11 @@ public class UserServiceImpl implements UserService {
     public ProfileDto getUsersProfile(Long userId) {
         return userConverter.toDto(userRepository.getUsersProfile(userId));
     }
+
+    @Override
+    @Transactional
+    public User getUserByLogin(String login) {
+        return userRepository.getUserByLogin(login);
+    }
+
 }

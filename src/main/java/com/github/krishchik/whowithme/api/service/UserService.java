@@ -2,6 +2,7 @@ package com.github.krishchik.whowithme.api.service;
 
 import com.github.krishchik.whowithme.controller.dto.ProfileDto;
 import com.github.krishchik.whowithme.controller.dto.UserDto;
+import com.github.krishchik.whowithme.model.User;
 
 import java.util.List;
 
@@ -18,4 +19,6 @@ public interface UserService {
     List<UserDto> getAllUsers() throws Exception;
 
     ProfileDto getUsersProfile(Long userId);
+
+    User getUserByLogin(String login);
 }
