@@ -1,29 +1,26 @@
 package com.github.krishchik.whowithme.service;
 
-import com.github.krishchik.whowithme.api.repository.PlaceRepository;
-import com.github.krishchik.whowithme.api.repository.UserRepository;
 import com.github.krishchik.whowithme.controller.dto.PlaceDto;
-import com.github.krishchik.whowithme.controller.dto.ProfileDto;
-import com.github.krishchik.whowithme.controller.dto.UserDto;
 import com.github.krishchik.whowithme.model.Place;
-import com.github.krishchik.whowithme.model.Profile;
-import com.github.krishchik.whowithme.model.User;
+import com.github.krishchik.whowithme.repository.repositoryApi.PlaceCrudRepository;
 import com.github.krishchik.whowithme.service.converter.PlaceConverter;
-import com.github.krishchik.whowithme.service.converter.UserConverter;
+import com.github.krishchik.whowithme.service.exception.OperationException;
+import com.github.krishchik.whowithme.service.serviceImpl.PlaceServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.*;
-import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class PlaceServiceTest {
@@ -35,72 +32,84 @@ public class PlaceServiceTest {
     private PlaceConverter placeConverter;
 
     @Mock
-    private PlaceRepository placeRepository;
+    private PlaceCrudRepository placeCrudRepository;
+
+
 
     private final Place place = Place.builder().id(1l).price(10).capacity(10).build();
 
     private final PlaceDto placeDto = PlaceDto.builder().id(1l).placeName("Name").price(10).build();
     @Test
     public void getById() throws Exception {
-        when(placeRepository.getById(any())).thenReturn(place);
+        when(placeCrudRepository.findById(any())).thenReturn(Optional.of(place));
         when(placeConverter.toDto(any(Place.class))).thenReturn(placeDto);
         final PlaceDto placeDto = placeService.getPlaceById(1l);
         assertEquals(1l,placeDto.getId());
     }
 
     @Test
+    public void getByIdReturnOperationException() throws Exception {
+        when(placeCrudRepository.findById(any())).thenReturn(Optional.ofNullable(null));
+        assertThrows(
+                OperationException.class,
+                () -> placeService.getPlaceById(5l)
+        );
+    }
+
+    @Test
     public void deletePlace() throws Exception {
-        doNothing().when(placeRepository).delete(place);
-        when(placeConverter.toEntity(any(PlaceDto.class))).thenReturn(place);
-        placeService.deletePlace(placeDto);
-        verify(placeRepository, times(1)).delete(place);
+        doNothing().when(placeCrudRepository).delete(place);
+        when(placeCrudRepository.findById(1l)).thenReturn(Optional.of(place));
+        placeService.deletePlace(1l);
+        verify(placeCrudRepository, times(1)).delete(place);
+    }
+
+    @Test
+    public void deletePlaceReturnOperationException() throws Exception {
+        when(placeCrudRepository.findById(5l)).thenReturn(Optional.ofNullable(null));
+        assertThrows(
+                OperationException.class,
+                () -> placeService.deletePlace(5l)
+        );
     }
 
     @Test
     public void updatePlace() throws Exception {
-        when(placeRepository.getById(any())).thenReturn(place);
-        doNothing().when(placeRepository).update(place);
+        when(placeCrudRepository.findById(any())).thenReturn(Optional.of(place));
+        when(placeCrudRepository.save(place)).thenReturn(place);
         placeService.updatePlace(placeDto);
-        verify(placeRepository, times(1)).update(place);
+        verify(placeCrudRepository, times(1)).save(place);
+    }
+
+    @Test
+    public void updatePlaceReturnOperationException() throws Exception {
+        when(placeCrudRepository.findById(any())).thenReturn(Optional.ofNullable(null));
+        assertThrows(
+                OperationException.class,
+                () -> placeService.updatePlace(placeDto)
+        );
     }
 
     @Test
     public void savePlace() throws Exception {
-        doNothing().when(placeRepository).save(place);
+        when(placeCrudRepository.save(place)).thenReturn(place);
         when(placeConverter.toEntity(any(PlaceDto.class))).thenReturn(place);
 
         placeService.createPlace(placeDto);
-        verify(placeRepository, times(1)).save(place);
+        verify(placeCrudRepository, times(1)).save(place);
     }
 
     @Test
-    public void getAll() throws Exception {
+    public void getAll() {
+        Pageable pageable = PageRequest.of(0, 2, Sort.by("id"));
         List<Place> places = new ArrayList<>();
         places.add(place);
-        List<PlaceDto> placeDtos = new ArrayList<>();
-        placeDtos.add(placeDto);
-        when(placeRepository.getAll()).thenReturn(places);
-        when(placeConverter.listToDto(anyList())).thenReturn(placeDtos);
-        final List<PlaceDto> placeDtos1 = placeService.getAllPlaces();
-        assertEquals(1, placeDtos1.size());
-    }
+        Page<Place> pageOfPlaces = new PageImpl<>(places, pageable, places.size());
+        when(placeCrudRepository.findAll(pageable)).thenReturn(pageOfPlaces);
+        when(placeConverter.toDto(any())).thenReturn(placeDto);
+        final Page<PlaceDto> placeDtos1 = placeService.getAllPlaces(pageable);
+        assertEquals(1, placeDtos1.getTotalElements());
+        assertEquals(1, placeDtos1.getTotalPages());
 
-    @Test
-    public void getPlacesSortedByCapacity() {
-        List<Place> places = new ArrayList<>();
-        List<PlaceDto> placeDtoList = new ArrayList<>();
-        when(placeRepository.getPlacesSortedByCapacity()).thenReturn(places);
-        when(placeConverter.listToDto(anyList())).thenReturn(placeDtoList);
-        assertEquals(placeDtoList, placeService.getPlacesSortedByCapacity());
     }
-
-    @Test
-    public void getCheapestPlaces() {
-        List<Place> places = new ArrayList<>();
-        List<PlaceDto> placeDtoList = new ArrayList<>();
-        when(placeRepository.getThreeCheapestPlaces()).thenReturn(places);
-        when(placeConverter.listToDto(anyList())).thenReturn(placeDtoList);
-        assertEquals(placeDtoList, placeService.getThreeCheapestPlaces());
-    }
-
 }

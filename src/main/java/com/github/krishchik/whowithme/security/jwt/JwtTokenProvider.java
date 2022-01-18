@@ -2,7 +2,6 @@ package com.github.krishchik.whowithme.security.jwt;
 
 
 import com.github.krishchik.whowithme.model.Role;
-import com.github.krishchik.whowithme.service.exception.OperationException;
 import io.jsonwebtoken.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -61,7 +60,7 @@ public class JwtTokenProvider {
     }
     public String resolveToken(HttpServletRequest req) {
         String bearerToken = req.getHeader("Authorization");
-        if (bearerToken != null && bearerToken.startsWith("Bearer_")) {
+        if (bearerToken != null && bearerToken.startsWith("Bearer")) {
             return bearerToken.substring(7);
         }
         return null;
@@ -73,7 +72,7 @@ public class JwtTokenProvider {
 
             return !claims.getBody().getExpiration().before(new Date());
         } catch (JwtException | IllegalArgumentException e) {
-            throw new OperationException("JWT token is expired or invalid");
+            return false;
         }
     }
 }

@@ -1,37 +1,39 @@
 package com.github.krishchik.whowithme.repository;
 
 import com.github.krishchik.whowithme.RepositoryTest;
-import com.github.krishchik.whowithme.api.repository.*;
 import com.github.krishchik.whowithme.model.*;
-
-
+import com.github.krishchik.whowithme.repository.repositoryApi.*;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import static org.junit.jupiter.api.Assertions.*;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
+import org.springframework.test.context.web.WebAppConfiguration;
 
 import javax.transaction.Transactional;
-import java.time.LocalDateTime;
-import java.util.List;
+import java.sql.Timestamp;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
+@Transactional
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@ContextConfiguration(classes = { PlaceRepositoryImpl.class, EventRepositoryImpl.class, UserRepositoryImpl.class, ProfileRepositoryImpl.class, RoleRepositoryImpl.class})
+@WebAppConfiguration
 public class EventRepositoryTest extends RepositoryTest {
 
     @Autowired
-    EventRepository eventRepository;
+    EventCrudRepository eventRepository;
     @Autowired
-    UserRepository userRepository;
+    UserCrudRepository userRepository;
     @Autowired
-    PlaceRepository placeRepository;
+    PlaceCrudRepository placeRepository;
     @Autowired
-    ProfileRepository profileRepository;
+    ProfileCrudRepository profileRepository;
     @Autowired
-    RoleRepository roleRepository;
-
+    RoleCrudRepository roleRepository;
 
     private Event event1;
     private User user;
@@ -44,6 +46,7 @@ public class EventRepositoryTest extends RepositoryTest {
 
         place1 = new Place();
         place1.setId(1l);
+        place1.setPlaceName("name");
         place1.setCapacity(10);
         place1.setPrice(100);
 
@@ -63,11 +66,12 @@ public class EventRepositoryTest extends RepositoryTest {
         event1 = new Event();
         event1.setEventName("1event");
         event1.setEventStatus(EventStatus.ACTIVE);
-        event1.setNumberOfPeople(10);
+        event1.setAvailableSlots(10);
+        event1.setNumberOfSlots(10);
         event1.setAgeLimit(10);
         event1.setId(1l);
-        event1.setDate(LocalDateTime.now());
-        event1.setStartTime(LocalDateTime.now());
+        event1.setStartTime(new Timestamp(System.currentTimeMillis()));
+        event1.setEndTime(new Timestamp(System.currentTimeMillis()));
 
     }
 
@@ -82,11 +86,10 @@ public class EventRepositoryTest extends RepositoryTest {
         event1.setPlace(place1);
         event1.setCreator(user);
         eventRepository.save(event1);
-
-        List<Event> eventsByPlace = eventRepository.getEventsByPlace(place1.getId());
-        assertEquals("1event",eventsByPlace.get(0).getEventName());
-        assertEquals(1, eventsByPlace.size());
-
+        Pageable pageable = PageRequest.of(0,3);
+        final Page<Event> events = eventRepository.findEventsByPlaceId(pageable, place1.getId());
+        assertEquals("1event", events.getContent().get(0).getEventName());
+        assertEquals(1, events.getTotalElements());
     }
 
     @Test
@@ -104,6 +107,7 @@ public class EventRepositoryTest extends RepositoryTest {
         assertEquals(1l, eventRepository.getById(1l).getId());
     }
 
+
     @Test void shouldDeleteEventCorrect() throws Exception {
         placeRepository.save(place1);
         profileRepository.save(profile);
@@ -115,7 +119,10 @@ public class EventRepositoryTest extends RepositoryTest {
         event1.setCreator(user);
         eventRepository.save(event1);
         eventRepository.delete(event1);
-        assertNull(eventRepository.getById(1l));
+        assertThrows(
+                JpaObjectRetrievalFailureException.class,
+                () -> eventRepository.getById(1l)
+        );
     }
 
     @Test
@@ -129,9 +136,10 @@ public class EventRepositoryTest extends RepositoryTest {
         event1.setPlace(place1);
         event1.setCreator(user);
         eventRepository.save(event1);
-        final List<Event> events = eventRepository.getAll();
-        assertEquals(1, events.size());
-        assertEquals("1event", events.get(0).getEventName());
+        Pageable pageable = PageRequest.of(0,3);
+        final Page<Event> events = eventRepository.findAll(pageable);
+        assertEquals(1L, events.getTotalElements());
+        assertEquals("1event", events.getContent().get(0).getEventName());
 
     }
 
@@ -149,11 +157,7 @@ public class EventRepositoryTest extends RepositoryTest {
 
         Event updatedEvent = eventRepository.getById(1l);
         updatedEvent.setEventName("newName");
-        eventRepository.update(updatedEvent);
+        eventRepository.save(updatedEvent);
         assertEquals("newName", eventRepository.getById(1l).getEventName());
     }
-
-
-
-
 }

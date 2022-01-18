@@ -1,1 +1,0 @@
-CREATE UNIQUE INDEX events_fk1 ON events using btree (place_id)

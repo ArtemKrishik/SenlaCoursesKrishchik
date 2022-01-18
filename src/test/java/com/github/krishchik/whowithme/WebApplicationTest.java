@@ -21,7 +21,7 @@ public class WebApplicationTest extends DatabaseHelper {
 
     protected MockMvc mockMvc;
 
-    @BeforeEach
+   @BeforeEach
     public void setup() {
         this.mockMvc = MockMvcBuilders.webAppContextSetup(this.webApplicationContext).build();
     }

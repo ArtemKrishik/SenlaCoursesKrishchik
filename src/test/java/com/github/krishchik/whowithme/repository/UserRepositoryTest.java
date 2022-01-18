@@ -1,30 +1,43 @@
 package com.github.krishchik.whowithme.repository;
 
+
+
+
 import com.github.krishchik.whowithme.RepositoryTest;
-import com.github.krishchik.whowithme.api.repository.ProfileRepository;
-import com.github.krishchik.whowithme.api.repository.RoleRepository;
-import com.github.krishchik.whowithme.api.repository.UserRepository;
+import com.github.krishchik.whowithme.config.DatabaseConfiguration;
 import com.github.krishchik.whowithme.model.*;
-import org.hibernate.LazyInitializationException;
+import com.github.krishchik.whowithme.repository.repositoryApi.ProfileCrudRepository;
+import com.github.krishchik.whowithme.repository.repositoryApi.RoleCrudRepository;
+import com.github.krishchik.whowithme.repository.repositoryApi.UserCrudRepository;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.web.AnnotationConfigWebContextLoader;
+import org.springframework.test.context.web.WebAppConfiguration;
+
+import javax.transaction.Transactional;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-@ContextConfiguration(classes = { UserRepositoryImpl.class, ProfileRepositoryImpl.class, RoleRepositoryImpl.class })
+@WebAppConfiguration
+@ContextConfiguration(
+        classes = DatabaseConfiguration.class,
+        loader = AnnotationConfigWebContextLoader.class
+)
+@Transactional
 public class UserRepositoryTest extends RepositoryTest {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserCrudRepository userRepository;
     @Autowired
-    private ProfileRepository profileRepository;
+    private ProfileCrudRepository profileRepository;
     @Autowired
-    private RoleRepository roleRepository;
+    private RoleCrudRepository roleRepository;
 
     private User user;
     private Profile profile;
@@ -35,16 +48,15 @@ public class UserRepositoryTest extends RepositoryTest {
     public void getTestUser() throws Exception {
 
         user = new User();
-        user.setId(2l);
         user.setLogin("login");
         user.setPassword("password");
         profile = new Profile();
-        profile.setId(1l);
+
         profile.setAge(10);
         profile.setName("Name");
         profile.setPhoneNumber(111l);
         role = new Role();
-        role.setId(1l);
+
         role.setName("admin");
 
     }
@@ -57,7 +69,10 @@ public class UserRepositoryTest extends RepositoryTest {
         user.setRole(role);
         userRepository.save(user);
         userRepository.delete(user);
-        assertNull(userRepository.getById(2l));
+        assertThrows(
+                JpaObjectRetrievalFailureException.class,
+                () -> userRepository.getById(user.getId())
+        );
     }
 
     @Test
@@ -67,24 +82,10 @@ public class UserRepositoryTest extends RepositoryTest {
         user.setProfile(profile);
         user.setRole(role);
         userRepository.save(user);
-        final User potentialUser = userRepository.getById(2l);
-        assertEquals(user.getId(), potentialUser.getId());
+        assertEquals(userRepository.findById(user.getId()).get().getId(), user.getId());
     }
 
 
-    @Test
-    public void shouldFinishWithNullPointerException() throws Exception {
-
-        profileRepository.save(profile);
-        roleRepository.save(role);
-        user.setProfile(profile);
-        user.setRole(role);
-        userRepository.save(user);
-        assertThrows(
-                LazyInitializationException.class,
-                () -> userRepository.getById(2l).getRole().getName()
-        );
-    }
 
     @Test
     public void shouldGiveUsersProfileCorrect() throws Exception {
@@ -93,7 +94,7 @@ public class UserRepositoryTest extends RepositoryTest {
         user.setProfile(profile);
         user.setRole(role);
         userRepository.save(user);
-        assertEquals(userRepository.getUsersProfile(2l).getId(), 1l);
+        assertEquals(profileRepository.findProfileByUserId(user.getId()).get().getId(), profile.getId());
     }
 
     @Test
@@ -103,9 +104,9 @@ public class UserRepositoryTest extends RepositoryTest {
         user.setProfile(profile);
         user.setRole(role);
         userRepository.save(user);
-        final List<User> users = userRepository.getAll();
-        assertEquals(1, users.size());
-        assertEquals("login", users.get(0).getLogin());
+        final List<User> users = userRepository.findAll();
+        assertEquals(4, users.size());
+        assertEquals(1l, users.get(0).getId());
 
     }
 
@@ -116,10 +117,10 @@ public class UserRepositoryTest extends RepositoryTest {
         user.setProfile(profile);
         user.setRole(role);
         userRepository.save(user);
-        User updatedUser = userRepository.getById(2l);
+        User updatedUser = userRepository.getById(user.getId());
         updatedUser.setLogin("newLogin");
-        userRepository.update(updatedUser);
-        assertEquals("newLogin", userRepository.getById(2l).getLogin());
+        userRepository.save(updatedUser);
+        assertEquals("newLogin", userRepository.getById(user.getId()).getLogin());
     }
 
 }

@@ -32,6 +32,7 @@ public class JwtTokenFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest req, ServletResponse res, FilterChain filterChain) throws IOException, ServletException {
+
         SpringBeanAutowiringSupport.processInjectionBasedOnCurrentContext(this);
         String token = jwtTokenProvider.resolveToken((HttpServletRequest) req);
         if (token != null && jwtTokenProvider.validateToken(token)) {

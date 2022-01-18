@@ -10,11 +10,11 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 @Table(name = "roles")
 public class Role extends AbstractEntity {
 
-    @Id
-    private Long id;
+
     @Column(name = "name")
     private String name;
     @OneToMany(mappedBy = "role")
@@ -23,8 +23,14 @@ public class Role extends AbstractEntity {
     @Override
     public String toString() {
         return "Role{" +
-                "id=" + id +
+                "id=" + getId() +
                 ", name='" + name + '\'' +
                 '}';
+    }
+
+    @Builder
+    public Role(Long id, String name) {
+        super(id);
+        this.name = name;
     }
 }

@@ -1,35 +1,42 @@
 package com.github.krishchik.whowithme.model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 import java.util.List;
 
 
-@Entity
-@Getter
-@Setter
-@Builder
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
 @Table(name = "events")
+@NamedEntityGraph(name = "event-users-entity-graph",
+        attributeNodes = @NamedAttributeNode("users")
+)
 public class Event extends AbstractEntity{
-    @Id
-    private Long id;
+
     @Column(name = "event_name")
     private String eventName;
     @Column(name = "status")
     @Enumerated(EnumType.STRING)
     private EventStatus eventStatus;
-    @Column(name = "number_of_people")
-    private Integer numberOfPeople;
+    @Column(name = "number_of_slots")
+    private Integer numberOfSlots;
+    @Column(name = "available_slots")
+    private Integer availableSlots;
     @Column(name = "age_limit")
     private Integer ageLimit;
-    @Column(name = "date")
-    private LocalDateTime date;
+
+    @Column(name = "end_time")
+    private Timestamp endTime;
     @Column(name = "start_time")
-    private LocalDateTime startTime;
+    private Timestamp startTime;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "creator_id")
     private User creator;
@@ -44,16 +51,32 @@ public class Event extends AbstractEntity{
     )
     private List<User> users;
 
+    public void addUser(User user) {
+        users.add(user);
+    }
+
+
+
     @Override
     public String toString() {
         return "Event{" +
-                "id=" + id +
+                "id=" + getId() +
                 ", eventName='" + eventName + '\'' +
                 ", eventStatus=" + eventStatus +
-                ", numberOfPeople=" + numberOfPeople +
                 ", ageLimit=" + ageLimit +
-                ", date=" + date +
                 ", startTime=" + startTime +
                 '}';
+    }
+
+    @Builder
+    public Event(Long id, String eventName, EventStatus eventStatus, Integer ageLimit, Integer numberOfSlots, Timestamp startTime, Timestamp endTime, User creator) {
+        super(id);
+        this.eventName = eventName;
+        this.eventStatus = eventStatus;
+        this.ageLimit = ageLimit;
+        this.numberOfSlots = numberOfSlots;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.creator = creator;
     }
 }

@@ -12,8 +12,7 @@ import javax.persistence.*;
 @Table(name = "profiles")
 public class Profile extends AbstractEntity{
 
-    @Id
-    private Long id;
+
     @Column(name = "name")
     private String name;
     @Column(name = "age")
@@ -26,7 +25,7 @@ public class Profile extends AbstractEntity{
     @Override
     public String toString() {
         return "Profile{" +
-                "id=" + id +
+                "id=" + getId() +
                 ", name='" + name + '\'' +
                 ", age=" + age +
                 ", phoneNumber=" + phoneNumber +

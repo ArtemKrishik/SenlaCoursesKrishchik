@@ -1,6 +1,6 @@
 package com.github.krishchik.whowithme.security;
 
-import com.github.krishchik.whowithme.api.service.UserService;
+import com.github.krishchik.whowithme.service.serviceApi.UserService;
 import com.github.krishchik.whowithme.model.User;
 import com.github.krishchik.whowithme.security.jwt.JwtUserFactory;
 import org.springframework.beans.factory.annotation.Autowired;

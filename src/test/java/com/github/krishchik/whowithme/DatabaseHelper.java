@@ -2,6 +2,7 @@ package com.github.krishchik.whowithme;
 
 import org.springframework.test.context.jdbc.Sql;
 
-@Sql(scripts = "classpath:drop_all.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+@Sql(scripts = "classpath:schema.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
+@Sql(scripts = "classpath:data.sql", executionPhase = Sql.ExecutionPhase.BEFORE_TEST_METHOD)
 public class DatabaseHelper {
 }
