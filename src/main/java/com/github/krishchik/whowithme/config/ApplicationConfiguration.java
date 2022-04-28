@@ -1,5 +1,6 @@
 package com.github.krishchik.whowithme.config;
 
+import com.github.krishchik.whowithme.repository.filter.EventSpecificationsBuilder;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.context.annotation.Bean;
@@ -13,7 +14,9 @@ public class ApplicationConfiguration {
 
     @Bean
     public ModelMapper modelMapper() {
+
         ModelMapper modelMapper = new ModelMapper();
+
         modelMapper
                 .getConfiguration()
                 .setMatchingStrategy(MatchingStrategies.STRICT)
@@ -28,4 +31,8 @@ public class ApplicationConfiguration {
         return new BCryptPasswordEncoder();
     }
 
+    @Bean
+    public EventSpecificationsBuilder eventSpecificationsBuilder() {
+        return new EventSpecificationsBuilder();
+    }
 }

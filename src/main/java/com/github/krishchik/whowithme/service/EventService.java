@@ -1,4 +1,4 @@
-package com.github.krishchik.whowithme.service.serviceApi;
+package com.github.krishchik.whowithme.service;
 
 import com.github.krishchik.whowithme.controller.dto.EventDto;
 import com.github.krishchik.whowithme.controller.dto.UserDto;

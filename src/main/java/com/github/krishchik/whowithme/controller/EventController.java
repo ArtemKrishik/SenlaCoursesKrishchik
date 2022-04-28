@@ -6,8 +6,7 @@ import com.github.krishchik.whowithme.model.Event;
 import com.github.krishchik.whowithme.repository.filter.EventSpecificationsBuilder;
 import com.github.krishchik.whowithme.service.serviceImpl.EventServiceImpl;
 import com.github.krishchik.whowithme.service.serviceImpl.UserServiceImpl;
-import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -17,22 +16,18 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.security.Principal;
-import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @RestController
 @RequestMapping("/events")
-@RequiredArgsConstructor
+@AllArgsConstructor
 @Validated
-public class EventControllerImpl {
+public class EventController {
 
-    @Autowired
     private final EventServiceImpl eventService;
-    @Autowired
     private final UserServiceImpl userService;
-
-
+    private final EventSpecificationsBuilder builder;
 
     @PostMapping(value = "/user")
     public void createEvent(
@@ -66,7 +61,7 @@ public class EventControllerImpl {
             @RequestParam(value = "paramToSort", required = false, defaultValue = "id") String paramToSort,
             @RequestParam(value = "search", required = false) String search
     ) {
-        EventSpecificationsBuilder builder = new EventSpecificationsBuilder();
+
         Pattern pattern = Pattern.compile("(\\w+?)(:|<|>)(\\w+?),");
         Matcher matcher = pattern.matcher(search+",");
         while (matcher.find()) {
@@ -78,39 +73,36 @@ public class EventControllerImpl {
     }
 
     @GetMapping(value = "user/eventsByPlace/{id}")
-    public List<EventDto> getEventsByPlace(
+    public Page<EventDto> getEventsByPlace(
             @PathVariable Long id,
             @RequestParam(value = "size", required = false, defaultValue = "3") Integer size,
             @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
             @RequestParam(value = "paramToSort", required = false, defaultValue = "id") String paramToSort
     ) {
-        return eventService.getEventsByPlace(PageRequest.of(page, size, Sort.by(paramToSort)),id)
-                .stream().toList();
+        return eventService.getEventsByPlace(PageRequest.of(page, size, Sort.by(paramToSort)),id);
+
     }
 
     @GetMapping(value = "user/usersEvents")
-    public List<EventDto> getUsersEvents(
+    public Page<EventDto> getUsersEvents(
             Principal userDto,
             @RequestParam(value = "size", required = false, defaultValue = "3") Integer size,
             @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
             @RequestParam(value = "paramToSort", required = false, defaultValue = "id") String paramToSort
     ) {
-
-
         return eventService.getUsersEvents(PageRequest.of(page, size, Sort.by(paramToSort)),
-                userService.getUserByLogin(userDto.getName()).getId())
-                .stream().toList();
+                userService.getUserByLogin(userDto.getName()).getId());
     }
 
     @GetMapping(value = "/user/usersOfEvent/{id}")
-    public List<UserDto> getUsersOfEvent(
+    public Page<UserDto> getUsersOfEvent(
             @PathVariable Long id,
             @RequestParam(value = "size", required = false, defaultValue = "3") Integer size,
             @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
             @RequestParam(value = "paramToSort", required = false, defaultValue = "id") String paramToSort
     )  {
-        return eventService.getUsersOfEvent(PageRequest.of(page, size, Sort.by(paramToSort)),id)
-                .stream().toList();
+        return eventService.getUsersOfEvent(PageRequest.of(page, size, Sort.by(paramToSort)),id);
+
     }
 
 }

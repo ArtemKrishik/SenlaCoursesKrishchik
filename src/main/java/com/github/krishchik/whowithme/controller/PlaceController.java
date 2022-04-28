@@ -2,8 +2,11 @@ package com.github.krishchik.whowithme.controller;
 
 import com.github.krishchik.whowithme.controller.dto.PlaceDto;
 import com.github.krishchik.whowithme.service.serviceImpl.PlaceServiceImpl;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.validation.annotation.Validated;
@@ -15,15 +18,10 @@ import java.util.List;
 @RestController
 @RequestMapping("/places")
 @Validated
-public class PlaceControllerImpl {
+@AllArgsConstructor
+public class PlaceController {
 
-    @Autowired
     private final PlaceServiceImpl placeService;
-
-    public PlaceControllerImpl(PlaceServiceImpl placeService) {
-        this.placeService = placeService;
-    }
-
 
     @PostMapping(value = "/admin")
     public void createPlace(@Valid @RequestBody PlaceDto placeDto) {
@@ -46,13 +44,13 @@ public class PlaceControllerImpl {
     }
 
     @GetMapping(value = "/user")
-    public List<PlaceDto> getAll(
+    public Page<PlaceDto> getAll(
             @RequestParam(value = "size", required = false, defaultValue = "3") Integer size,
             @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
             @RequestParam(value = "paramToSort", required = false, defaultValue = "id") String paramToSort
             ) {
-        return placeService.getAllPlaces(PageRequest.of(page, size, Sort.by(paramToSort)))
-                .stream().toList();
+        return placeService.getAllPlaces(PageRequest.of(page, size, Sort.by(paramToSort)));
+
     }
 
 

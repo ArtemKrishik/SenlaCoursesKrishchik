@@ -3,7 +3,7 @@ package com.github.krishchik.whowithme.controller;
 import com.github.krishchik.whowithme.WebApplicationTest;
 import com.github.krishchik.whowithme.model.Event;
 import com.github.krishchik.whowithme.model.EventStatus;
-import com.github.krishchik.whowithme.repository.repositoryApi.EventCrudRepository;
+import com.github.krishchik.whowithme.repository.EventCrudRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -31,7 +31,7 @@ public class EventControllerTest extends WebApplicationTest {
             .build();
 
     @Autowired
-    private EventControllerImpl eventController;
+    private EventController eventController;
 
     @Test
     @WithMockUser(username = "artem", roles = "ADMIN")

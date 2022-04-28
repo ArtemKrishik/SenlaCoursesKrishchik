@@ -1,16 +1,18 @@
 package com.github.krishchik.whowithme.controller;
 
-import com.github.krishchik.whowithme.service.serviceApi.AuthentificationService;
+import com.github.krishchik.whowithme.service.AuthentificationService;
 import com.github.krishchik.whowithme.controller.dto.AuthDto;
 import com.github.krishchik.whowithme.controller.dto.UserDto;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class AuthenticationController {
 
     private final AuthentificationService authentificationService;

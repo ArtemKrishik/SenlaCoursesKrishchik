@@ -1,4 +1,4 @@
-package com.github.krishchik.whowithme.repository.repositoryApi;
+package com.github.krishchik.whowithme.repository;
 
 import com.github.krishchik.whowithme.model.User;
 import org.springframework.data.domain.Page;
@@ -16,9 +16,5 @@ public interface UserCrudRepository extends JpaRepository<User, Long>, JpaSpecif
     Optional<User> findUserByLogin(String login);
 
     Page<User> findUsersByEventsId(Pageable pageable, Long eventId);
-
-
-
-
 
 }
