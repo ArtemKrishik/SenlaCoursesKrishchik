@@ -1,4 +1,4 @@
-package com.github.krishchik.whowithme.repository.repositoryApi;
+package com.github.krishchik.whowithme.repository;
 
 import com.github.krishchik.whowithme.model.Event;
 import org.springframework.data.domain.Page;
@@ -9,6 +9,7 @@ import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 public interface EventCrudRepository
         extends JpaRepository<Event, Long>, JpaSpecificationExecutor<Event> {
+
 
     Page<Event> findEventsByUsersId(Pageable pageable, Long userId);
 

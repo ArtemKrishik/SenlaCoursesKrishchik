@@ -1,16 +1,16 @@
 package com.github.krishchik.whowithme.service.serviceImpl;
 
-import com.github.krishchik.whowithme.service.serviceApi.AuthentificationService;
-import com.github.krishchik.whowithme.service.serviceApi.UserService;
+import com.github.krishchik.whowithme.service.AuthentificationService;
+import com.github.krishchik.whowithme.service.UserService;
 import com.github.krishchik.whowithme.controller.dto.AuthDto;
 import com.github.krishchik.whowithme.controller.dto.UserDto;
 import com.github.krishchik.whowithme.model.Profile;
 import com.github.krishchik.whowithme.model.User;
-import com.github.krishchik.whowithme.repository.repositoryApi.ProfileCrudRepository;
-import com.github.krishchik.whowithme.repository.repositoryApi.RoleCrudRepository;
-import com.github.krishchik.whowithme.repository.repositoryApi.UserCrudRepository;
+import com.github.krishchik.whowithme.repository.ProfileCrudRepository;
+import com.github.krishchik.whowithme.repository.RoleCrudRepository;
+import com.github.krishchik.whowithme.repository.UserCrudRepository;
 import com.github.krishchik.whowithme.security.jwt.JwtTokenProvider;
-import com.github.krishchik.whowithme.service.exception.OperationException;
+import com.github.krishchik.whowithme.exception.OperationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;

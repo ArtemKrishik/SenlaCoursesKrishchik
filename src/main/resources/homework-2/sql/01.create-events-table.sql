@@ -2,7 +2,6 @@ CREATE TABLE events (
 id serial NOT NULL,
 event_name varchar NOT NULL,
 place_id serial NOT NULL,
-status varchar NOT NULL,
 start_time TIMESTAMP NOT NULL,
 end_time TIMESTAMP NOT NULL,
 number_of_slots integer NOT NULL,

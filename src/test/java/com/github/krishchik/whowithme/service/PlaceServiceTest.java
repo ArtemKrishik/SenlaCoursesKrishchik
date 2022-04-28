@@ -2,9 +2,9 @@ package com.github.krishchik.whowithme.service;
 
 import com.github.krishchik.whowithme.controller.dto.PlaceDto;
 import com.github.krishchik.whowithme.model.Place;
-import com.github.krishchik.whowithme.repository.repositoryApi.PlaceCrudRepository;
+import com.github.krishchik.whowithme.repository.PlaceCrudRepository;
 import com.github.krishchik.whowithme.service.converter.PlaceConverter;
-import com.github.krishchik.whowithme.service.exception.OperationException;
+import com.github.krishchik.whowithme.exception.OperationException;
 import com.github.krishchik.whowithme.service.serviceImpl.PlaceServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

@@ -1,9 +1,11 @@
-package com.github.krishchik.whowithme.controller.Mapper;
+package com.github.krishchik.whowithme.controller.mapper.mapperImpl;
 
-import com.github.krishchik.whowithme.repository.repositoryApi.ProfileCrudRepository;
-import com.github.krishchik.whowithme.repository.repositoryApi.RoleCrudRepository;
+import com.github.krishchik.whowithme.controller.mapper.IUserMapper;
+import com.github.krishchik.whowithme.repository.ProfileCrudRepository;
+import com.github.krishchik.whowithme.repository.RoleCrudRepository;
 import com.github.krishchik.whowithme.controller.dto.UserDto;
 import com.github.krishchik.whowithme.model.User;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
@@ -14,8 +16,8 @@ import javax.annotation.PostConstruct;
 import java.util.Objects;
 
 @Component
-@RequiredArgsConstructor
-public class UserMapper implements IUserMapper{
+@AllArgsConstructor
+public class UserMapper implements IUserMapper {
 
     private final ModelMapper mapper;
 
@@ -49,9 +51,6 @@ public class UserMapper implements IUserMapper{
     private Long getRoleId(User source) {
         return Objects.isNull(source) || Objects.isNull(source.getId()) ? null : source.getRole().getId();
     }
-
-
-
 
     void mapSpecificFields(UserDto source, User destination) throws Exception {
 

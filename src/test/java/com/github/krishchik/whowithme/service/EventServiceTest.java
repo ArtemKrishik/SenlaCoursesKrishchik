@@ -1,15 +1,14 @@
 package com.github.krishchik.whowithme.service;
 
-import com.github.krishchik.whowithme.service.serviceApi.UserService;
 import com.github.krishchik.whowithme.controller.dto.EventDto;
 import com.github.krishchik.whowithme.model.Event;
 import com.github.krishchik.whowithme.model.Role;
 import com.github.krishchik.whowithme.model.User;
-import com.github.krishchik.whowithme.repository.repositoryApi.EventCrudRepository;
+import com.github.krishchik.whowithme.repository.EventCrudRepository;
 import com.github.krishchik.whowithme.repository.filter.EventSpecification;
 import com.github.krishchik.whowithme.repository.filter.SearchCriteria;
 import com.github.krishchik.whowithme.service.converter.EventConverter;
-import com.github.krishchik.whowithme.service.exception.OperationException;
+import com.github.krishchik.whowithme.exception.OperationException;
 import com.github.krishchik.whowithme.service.serviceImpl.EventServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

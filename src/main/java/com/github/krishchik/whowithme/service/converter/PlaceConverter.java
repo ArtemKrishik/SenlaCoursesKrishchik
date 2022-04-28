@@ -1,6 +1,6 @@
 package com.github.krishchik.whowithme.service.converter;
 
-import com.github.krishchik.whowithme.controller.Mapper.IPlaceMapper;
+import com.github.krishchik.whowithme.controller.mapper.IPlaceMapper;
 import com.github.krishchik.whowithme.controller.dto.PlaceDto;
 import com.github.krishchik.whowithme.model.Place;
 import lombok.AllArgsConstructor;

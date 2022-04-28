@@ -3,7 +3,7 @@ package com.github.krishchik.whowithme.controller;
 import com.github.krishchik.whowithme.WebApplicationTest;
 
 import com.github.krishchik.whowithme.model.Place;
-import com.github.krishchik.whowithme.repository.repositoryApi.PlaceCrudRepository;
+import com.github.krishchik.whowithme.repository.PlaceCrudRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;

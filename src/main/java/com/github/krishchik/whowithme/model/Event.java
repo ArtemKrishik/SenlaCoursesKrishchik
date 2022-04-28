@@ -1,29 +1,23 @@
 package com.github.krishchik.whowithme.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
 import java.util.List;
 
 
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
+@Getter
+@Setter
 @Entity
 @Table(name = "events")
-@NamedEntityGraph(name = "event-users-entity-graph",
-        attributeNodes = @NamedAttributeNode("users")
-)
 public class Event extends AbstractEntity{
 
     @Column(name = "event_name")
     private String eventName;
-    @Column(name = "status")
-    @Enumerated(EnumType.STRING)
+    @Transient
     private EventStatus eventStatus;
     @Column(name = "number_of_slots")
     private Integer numberOfSlots;

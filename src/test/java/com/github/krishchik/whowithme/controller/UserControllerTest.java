@@ -2,7 +2,7 @@ package com.github.krishchik.whowithme.controller;
 
 import com.github.krishchik.whowithme.WebApplicationTest;
 import com.github.krishchik.whowithme.model.User;
-import com.github.krishchik.whowithme.repository.repositoryApi.UserCrudRepository;
+import com.github.krishchik.whowithme.repository.UserCrudRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;

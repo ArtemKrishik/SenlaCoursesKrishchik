@@ -15,9 +15,8 @@ import java.security.Principal;
 @AllArgsConstructor
 @RestController
 @RequestMapping("/users")
-public class UserControllerImpl {
+public class UserController {
 
-    @Autowired
     private final UserServiceImpl userService;
 
     @PostMapping(value = "/admin")

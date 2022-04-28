@@ -1,4 +1,4 @@
-package com.github.krishchik.whowithme.controller.Mapper;
+package com.github.krishchik.whowithme.controller.mapper;
 
 import com.github.krishchik.whowithme.controller.dto.AbstractDto;
 import com.github.krishchik.whowithme.model.AbstractEntity;

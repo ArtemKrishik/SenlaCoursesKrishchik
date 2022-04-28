@@ -1,9 +1,11 @@
-package com.github.krishchik.whowithme.controller.Mapper;
+package com.github.krishchik.whowithme.controller.mapper.mapperImpl;
 
-import com.github.krishchik.whowithme.repository.repositoryApi.PlaceCrudRepository;
-import com.github.krishchik.whowithme.repository.repositoryApi.UserCrudRepository;
+import com.github.krishchik.whowithme.controller.mapper.IEventMapper;
+import com.github.krishchik.whowithme.repository.PlaceCrudRepository;
+import com.github.krishchik.whowithme.repository.UserCrudRepository;
 import com.github.krishchik.whowithme.controller.dto.EventDto;
 import com.github.krishchik.whowithme.model.Event;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
@@ -16,8 +18,8 @@ import java.time.LocalDateTime;
 import java.util.Objects;
 
 @Component
-@RequiredArgsConstructor
-public class EventMapper implements IEventMapper{
+@AllArgsConstructor
+public class EventMapper implements IEventMapper {
 
     private final ModelMapper mapper;
 

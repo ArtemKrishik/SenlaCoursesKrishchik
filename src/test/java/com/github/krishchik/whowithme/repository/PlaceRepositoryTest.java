@@ -2,7 +2,6 @@ package com.github.krishchik.whowithme.repository;
 
 import com.github.krishchik.whowithme.RepositoryTest;
 import com.github.krishchik.whowithme.model.*;
-import com.github.krishchik.whowithme.repository.repositoryApi.PlaceCrudRepository;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestInstance;

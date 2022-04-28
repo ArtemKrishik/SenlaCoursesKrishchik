@@ -1,16 +1,16 @@
 package com.github.krishchik.whowithme.service.serviceImpl;
 
-import com.github.krishchik.whowithme.repository.repositoryApi.EventCrudRepository;
-import com.github.krishchik.whowithme.repository.repositoryApi.UserCrudRepository;
-import com.github.krishchik.whowithme.service.serviceApi.EventService;
-import com.github.krishchik.whowithme.service.serviceApi.UserService;
+import com.github.krishchik.whowithme.repository.EventCrudRepository;
+import com.github.krishchik.whowithme.repository.UserCrudRepository;
+import com.github.krishchik.whowithme.service.EventService;
+import com.github.krishchik.whowithme.service.UserService;
 import com.github.krishchik.whowithme.controller.dto.EventDto;
 import com.github.krishchik.whowithme.controller.dto.UserDto;
 import com.github.krishchik.whowithme.model.Event;
 import com.github.krishchik.whowithme.model.User;
 import com.github.krishchik.whowithme.service.converter.EventConverter;
 import com.github.krishchik.whowithme.service.converter.UserConverter;
-import com.github.krishchik.whowithme.service.exception.OperationException;
+import com.github.krishchik.whowithme.exception.OperationException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,12 +33,8 @@ import static com.github.krishchik.whowithme.model.EventStatus.*;
 @AllArgsConstructor
 public class EventServiceImpl implements EventService {
 
-    @Autowired
     private final EventCrudRepository eventCrudRepository;
-
-    @Autowired
     private final UserCrudRepository userCrudRepository;
-    @Autowired
     private final UserService userService;
     private final EventConverter eventConverter;
     private final UserConverter userConverter;
@@ -55,6 +51,7 @@ public class EventServiceImpl implements EventService {
 
         return new PageImpl<>(listpleisovDto, pageable, events.getTotalElements());
     }
+
 
     @Override
     @Transactional
@@ -154,9 +151,12 @@ public class EventServiceImpl implements EventService {
 
     @Override
     @Transactional
+    @org.springframework.transaction.annotation.Transactional
     public Page<EventDto> getAllEvents(Pageable pageable, Specification<Event> specification)  {
         Page<Event> events = eventCrudRepository.findAll(specification, pageable);
+
         events.forEach(this::updateEventStatus);
+        events.getContent().get(0).getUsers().size();
         List<EventDto> listpleisovDto = events.getContent().stream()
                 .map(eventConverter::toDto)
                 .collect(Collectors.toList());

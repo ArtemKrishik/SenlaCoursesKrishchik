@@ -1,4 +1,4 @@
-package com.github.krishchik.whowithme.service.exception;
+package com.github.krishchik.whowithme.exception;
 
 public class JwtTokenException extends RuntimeException{
 

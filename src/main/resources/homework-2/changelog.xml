@@ -39,10 +39,13 @@
         <sqlFile encoding="utf8" path="./sql/05.add-constraint-events_fk0.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
-    <!--changeSet id="homework-2-add-constraint-users_fk0" author="Artem Krishchik">
+    <changeSet id="homework-2-add-constraint-users_fk0" author="Artem Krishchik">
         <sqlFile encoding="utf8" path="./sql/06.add-constraint-users_fk0.sql" relativeToChangelogFile="true"/>
-    </changeSet!-->
+    </changeSet>
 
+    <changeSet id="homework-2-add-constraint-users_fk1" author="Artem Krishchik">
+        <sqlFile encoding="utf8" path="./sql/25.add-constraint-users_fk1.sql" relativeToChangelogFile="true"/>
+    </changeSet>
     <changeSet id="homework-2-add-constraint-users-events_fk0" author="Artem Krishchik">
         <sqlFile encoding="utf8" path="./sql/07.add-constraint-users-events_fk0.sql" relativeToChangelogFile="true"/>
     </changeSet>

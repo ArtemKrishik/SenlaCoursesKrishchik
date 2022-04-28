@@ -1,6 +1,6 @@
 package com.github.krishchik.whowithme.service.converter;
 
-import com.github.krishchik.whowithme.controller.Mapper.IEventMapper;
+import com.github.krishchik.whowithme.controller.mapper.IEventMapper;
 import com.github.krishchik.whowithme.controller.dto.EventDto;
 import com.github.krishchik.whowithme.model.Event;
 import lombok.RequiredArgsConstructor;

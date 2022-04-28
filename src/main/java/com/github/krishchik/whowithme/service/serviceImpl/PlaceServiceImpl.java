@@ -1,11 +1,11 @@
 package com.github.krishchik.whowithme.service.serviceImpl;
 
-import com.github.krishchik.whowithme.repository.repositoryApi.PlaceCrudRepository;
-import com.github.krishchik.whowithme.service.serviceApi.PlaceService;
+import com.github.krishchik.whowithme.repository.PlaceCrudRepository;
+import com.github.krishchik.whowithme.service.PlaceService;
 import com.github.krishchik.whowithme.controller.dto.PlaceDto;
 import com.github.krishchik.whowithme.model.Place;
 import com.github.krishchik.whowithme.service.converter.PlaceConverter;
-import com.github.krishchik.whowithme.service.exception.OperationException;
+import com.github.krishchik.whowithme.exception.OperationException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +24,6 @@ import java.util.stream.Collectors;
 public class PlaceServiceImpl implements PlaceService {
 
 
-    @Autowired
     private final PlaceCrudRepository placeCrudRepository;
     private final PlaceConverter placeConverter;
 

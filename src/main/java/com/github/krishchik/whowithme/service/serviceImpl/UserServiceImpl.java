@@ -1,11 +1,11 @@
 package com.github.krishchik.whowithme.service.serviceImpl;
 
 import com.github.krishchik.whowithme.model.Profile;
-import com.github.krishchik.whowithme.repository.repositoryApi.EventCrudRepository;
-import com.github.krishchik.whowithme.repository.repositoryApi.ProfileCrudRepository;
-import com.github.krishchik.whowithme.repository.repositoryApi.RoleCrudRepository;
-import com.github.krishchik.whowithme.repository.repositoryApi.UserCrudRepository;
-import com.github.krishchik.whowithme.service.serviceApi.UserService;
+import com.github.krishchik.whowithme.repository.EventCrudRepository;
+import com.github.krishchik.whowithme.repository.ProfileCrudRepository;
+import com.github.krishchik.whowithme.repository.RoleCrudRepository;
+import com.github.krishchik.whowithme.repository.UserCrudRepository;
+import com.github.krishchik.whowithme.service.UserService;
 import com.github.krishchik.whowithme.controller.dto.MessageDto;
 import com.github.krishchik.whowithme.controller.dto.ProfileDto;
 import com.github.krishchik.whowithme.controller.dto.UserDto;
@@ -13,15 +13,16 @@ import com.github.krishchik.whowithme.model.Event;
 import com.github.krishchik.whowithme.model.User;
 import com.github.krishchik.whowithme.service.converter.ProfileConverter;
 import com.github.krishchik.whowithme.service.converter.UserConverter;
-import com.github.krishchik.whowithme.service.exception.OperationException;
+import com.github.krishchik.whowithme.exception.OperationException;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
+
 import java.security.Principal;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -51,7 +52,7 @@ public class UserServiceImpl implements UserService {
         user.setProfile(profile);
         user.setLogin(userDto.getLogin());
         user.setPassword(passwordEncoder.encode(userDto.getPassword()));
-        user.setRole(roleCrudRepository.getById(userDto.getId()));
+        user.setRole(roleCrudRepository.getById(userDto.getRoleId()));
         userCrudRepository.save(user);
     }
 

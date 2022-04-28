@@ -1,7 +1,9 @@
-package com.github.krishchik.whowithme.controller.Mapper;
+package com.github.krishchik.whowithme.controller.mapper.mapperImpl;
 
 import com.github.krishchik.whowithme.controller.dto.ProfileDto;
+import com.github.krishchik.whowithme.controller.mapper.IProfileMapper;
 import com.github.krishchik.whowithme.model.Profile;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
@@ -9,8 +11,8 @@ import org.springframework.stereotype.Component;
 import java.util.Objects;
 
 @Component
-@RequiredArgsConstructor
-public class ProfileMapper implements IProfileMapper{
+@AllArgsConstructor
+public class ProfileMapper implements IProfileMapper {
 
 
     private final ModelMapper mapper;

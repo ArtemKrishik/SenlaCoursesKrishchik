@@ -1,15 +1,15 @@
 package com.github.krishchik.whowithme.controller;
 
 import com.github.krishchik.whowithme.controller.dto.MessageDto;
-import com.github.krishchik.whowithme.service.exception.DatabaseAccessException;
-import com.github.krishchik.whowithme.service.exception.JwtTokenException;
-import com.github.krishchik.whowithme.service.exception.OperationException;
+import com.github.krishchik.whowithme.exception.DatabaseAccessException;
+import com.github.krishchik.whowithme.exception.OperationException;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import java.nio.file.AccessDeniedException;
 
 @RestControllerAdvice
 public class GlobalControllerAdvice {
@@ -36,13 +36,10 @@ public class GlobalControllerAdvice {
         return message;
     }
 
-
     @ExceptionHandler(DatabaseAccessException.class)
     @ResponseStatus(value = HttpStatus.BAD_REQUEST)
     public MessageDto databaseAccessExceptionHandler(DatabaseAccessException databaseAccessexception) {
         return new MessageDto(databaseAccessexception.getMessage());
    }
-
-
 
 }
