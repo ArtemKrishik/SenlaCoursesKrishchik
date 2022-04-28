@@ -1,31 +1,25 @@
 package com.github.krishchik.whowithme.service.converter;
 
-import com.github.krishchik.whowithme.controller.Mapper.Mapper;
+import com.github.krishchik.whowithme.controller.Mapper.IEventMapper;
 import com.github.krishchik.whowithme.controller.dto.EventDto;
-import com.github.krishchik.whowithme.controller.dto.PlaceDto;
 import com.github.krishchik.whowithme.model.Event;
-import com.github.krishchik.whowithme.model.Place;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
-import java.util.List;
-
 @Component
-@AllArgsConstructor
+@RequiredArgsConstructor
 public class EventConverter {
 
-    private final Mapper<EventDto, Event> eventMapper;
+    private final IEventMapper eventMapper;
 
     public Event toEntity(EventDto eventDto){
-        return eventMapper.toEntity(eventDto, Event.class);
+        return eventMapper.toEntity(eventDto);
     }
 
     public EventDto toDto(Event event){
-        return eventMapper.toDto(event, EventDto.class);
+        return eventMapper.toDto(event);
     }
 
-    public List<EventDto> listToDto(List<Event> events) {
-        return eventMapper.listToDto(events, EventDto.class);
-    }
+
 
 }

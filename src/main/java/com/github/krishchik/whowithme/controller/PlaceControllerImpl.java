@@ -1,19 +1,20 @@
 package com.github.krishchik.whowithme.controller;
 
-import com.github.krishchik.whowithme.controller.dto.EventDto;
 import com.github.krishchik.whowithme.controller.dto.PlaceDto;
-import com.github.krishchik.whowithme.service.PlaceServiceImpl;
+import com.github.krishchik.whowithme.service.serviceImpl.PlaceServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.util.List;
 
-@Component
 @RestController
 @RequestMapping("/places")
+@Validated
 public class PlaceControllerImpl {
 
     @Autowired
@@ -23,37 +24,37 @@ public class PlaceControllerImpl {
         this.placeService = placeService;
     }
 
-    @PostMapping
-    public void createPlace(@RequestBody PlaceDto placeDto) throws Exception {
+
+    @PostMapping(value = "/admin")
+    public void createPlace(@Valid @RequestBody PlaceDto placeDto) {
         placeService.createPlace(placeDto);
     }
 
-    @GetMapping(value = "/{id}")
-    public PlaceDto getPlaceById(@PathVariable Long id) throws Exception {
+    @GetMapping(value = "user/{id}")
+    public PlaceDto getPlaceById(@PathVariable Long id) {
         return placeService.getPlaceById(id);
     }
 
-    @PutMapping
-    public void updatePlace(@RequestBody PlaceDto placeDto) throws Exception {
+    @PutMapping(value = "/admin")
+    public void updatePlace(@Valid @RequestBody PlaceDto placeDto) {
         placeService.updatePlace(placeDto);
     }
 
-    @DeleteMapping
-    public void deletePlace(@RequestBody PlaceDto placeDto) throws Exception {
-        placeService.deletePlace(placeDto);
+    @DeleteMapping(value = "/admin/{id}")
+    public void deletePlace(@PathVariable Long id) {
+        placeService.deletePlace(id);
     }
 
-    @GetMapping
-    public ResponseEntity<List<PlaceDto>> getAll() throws Exception {
-        return new ResponseEntity<>(placeService.getAllPlaces(), HttpStatus.OK);
+    @GetMapping(value = "/user")
+    public List<PlaceDto> getAll(
+            @RequestParam(value = "size", required = false, defaultValue = "3") Integer size,
+            @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,
+            @RequestParam(value = "paramToSort", required = false, defaultValue = "id") String paramToSort
+            ) {
+        return placeService.getAllPlaces(PageRequest.of(page, size, Sort.by(paramToSort)))
+                .stream().toList();
     }
 
-    public List<PlaceDto> getPlacesSortedByCapacity() throws Exception {
-        return placeService.getPlacesSortedByCapacity();
-    }
 
-    public List<PlaceDto> getThreeCheapestPlaces() throws Exception {
-        return placeService.getThreeCheapestPlaces();
-    }
 
 }

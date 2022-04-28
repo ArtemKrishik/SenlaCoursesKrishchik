@@ -1,5 +1,10 @@
-delete from events;
-delete from users;
-delete from profiles;
-delete from roles;
-delete from places;
+    drop table roles cascade;
+      drop table profiles cascade;
+ drop table places cascade;
+     drop table users_events cascade;
+     drop table events cascade;
+
+    drop table users cascade;
+
+
+

@@ -1,123 +1,174 @@
 package com.github.krishchik.whowithme.controller;
 
 import com.github.krishchik.whowithme.WebApplicationTest;
-import com.github.krishchik.whowithme.api.repository.EventRepository;
-import com.github.krishchik.whowithme.api.repository.PlaceRepository;
 import com.github.krishchik.whowithme.model.Event;
 import com.github.krishchik.whowithme.model.EventStatus;
-import com.github.krishchik.whowithme.model.Place;
+import com.github.krishchik.whowithme.repository.repositoryApi.EventCrudRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
+import org.springframework.security.test.context.support.WithMockUser;
+
 
 import javax.transaction.Transactional;
 
-import java.time.LocalDateTime;
+import java.security.Principal;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+
 import static org.junit.jupiter.api.Assertions.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @Transactional
 public class EventControllerTest extends WebApplicationTest {
 
-    @Autowired
-    private EventRepository eventRepository;
 
-    private final Event event = Event.builder().id(1l).eventName("name").eventStatus(EventStatus.ACTIVE).ageLimit(12)
-            .numberOfPeople(10).build();
+    @Autowired
+    private EventCrudRepository eventRepository;
+
+    private final Event event = Event.builder().id(1l).eventName("event").eventStatus(EventStatus.ACTIVE).ageLimit(12).numberOfSlots(120)
+            .build();
+
+    @Autowired
+    private EventControllerImpl eventController;
 
     @Test
+    @WithMockUser(username = "artem", roles = "ADMIN")
     public void eventShouldBeCreated() throws Exception {
 
-        assertEquals(0, eventRepository.getAll().size());
+        assertEquals(1, eventRepository.findAll().size());
         
         final String eventDto = """  
                         {
-                           "id": 1,
                            "eventName": "event",
                            "eventStatus": "ACTIVE",
-                           "numberOfPeople": 120,
-                           "ageLimit": 12
+                           "numberOfSlots": 120,
+                           "availableSlots":50,
+                           "ageLimit": 12,
+                           "startTime": [
+                                           2021,12,29,15,21,30,135000000
+                                       ],
+                                       "endTime": [
+                                           2021,12,29,15,22,30,135000000
+                                       ],
+                           "placeId":1
                         }
                 """;
         mockMvc.perform(
-                post("/events")
+                post("/events/user")
+                        .principal(new Principal() {
+                            @Override
+                            public String getName() {
+                                return "artem";
+                            }
+                        })
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(eventDto)
         ).andExpect(status().is2xxSuccessful());
 
-        assertNotNull(eventRepository.getById(1l));
+        assertEquals(2, eventRepository.findAll().size());
+
     }
 
     @Test
+    @WithMockUser(username = "artem", roles = "ADMIN")
     public void eventShouldBeDeleted() throws Exception {
-        eventRepository.save(event);
 
-        final String eventUpdateDto = String.format("""
-                {
-                           "id": 1,
-                           "eventName": "event",
-                           "eventStatus": "ACTIVE",
-                           "numberOfPeople": 120,
-                           "ageLimit": 12
-                }
-                """);
+
+        Principal principal = new Principal() {
+            @Override
+            public String getName() {
+                return "artem";
+            }
+        };
         mockMvc.perform(
-                delete("/events")
+                delete("/events/user/1")
+                        .principal(principal)
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(eventUpdateDto)
+
         ).andExpect(status().is2xxSuccessful());
 
-        final Event event1 = eventRepository.getById(event.getId());
-
-        assertNull(event1);
+        assertThrows(
+                JpaObjectRetrievalFailureException.class,
+                () -> eventRepository.getById(event.getId())
+        );
     }
 
     @Test
+    @WithMockUser(username = "artem", roles = "ADMIN")
     public void eventShouldReturnWithCorrectFields() throws Exception {
-        eventRepository.save(event);
-
         mockMvc.perform(
-                get("/events/" + event.getId())
+                get("/events/user/"+event.getId())
         ).andExpect(status().is2xxSuccessful())
                 .andExpect(jsonPath("$.id").value(event.getId()))
                 .andExpect(jsonPath("$.eventName").value(event.getEventName()))
-                .andExpect(jsonPath("$.numberOfPeople").value(event.getNumberOfPeople()));
+                .andExpect(jsonPath("$.numberOfSlots").value(event.getNumberOfSlots()));
     }
 
     @Test
+    @WithMockUser(username = "artem", roles = "ADMIN")
     public void eventNameShouldBeUpdated() throws Exception {
-        eventRepository.save(event);
 
-        final String eventUpdateDto = String.format("""
+        final String eventUpdateDto = """
                 {
                            "id": 1,
                            "eventName": "event",
                            "eventStatus": "ACTIVE",
-                           "numberOfPeople": 50,
+                           "numberOfSlots": 50,
                            "ageLimit": 12
                 }
-                """);
-
+                """;
         mockMvc.perform(
-                put("/events")
+                put("/events/user")
+                        .principal(new Principal() {
+                            @Override
+                            public String getName() {
+                                return "artem";
+                            }
+                        })
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(eventUpdateDto)
         ).andExpect(status().is2xxSuccessful());
 
         final Event smith = eventRepository.getById(1l);
-        assertEquals(smith.getNumberOfPeople(), 50);
+        assertEquals(smith.getNumberOfSlots(), 50);
     }
 
     @Test
+    @WithMockUser(username = "artem", roles = "ADMIN")
     public void shouldReturnErrorTextWhenEventNotExists() throws Exception {
         mockMvc.perform(
-                get("/events/12")
-        ).andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.message").value("event with id 12 wasn`t found"));
+                get("/events/user/100")
+        ).andExpect(status().isNotFound());
     }
 
+    /*andExpect(content().json(
+                        "{" +
+                        "\"id\": 1,\n" +
+                        "    \"eventName\": \"event\",\n" +
+                        "    \"eventStatus\": \"COMPLITED\",\n" +
+                        "    \"numberOfSlots\": 120,\n" +
+                        "    \"availableSlots\": 120,\n" +
+                        "    \"ageLimit\": 12,\n" +
+                        "    \"startTime\": [\n" +
+                        "        2021,\n" +
+                        "        12,\n" +
+                        "        29,\n" +
+                        "        15,\n" +
+                        "        21,\n" +
+                        "        30,\n" +
+                        "        135000000\n" +
+                        "    ],\n" +
+                        "    \"endTime\": [\n" +
+                        "        2021,\n" +
+                        "        12,\n" +
+                        "        29,\n" +
+                        "        15,\n" +
+                        "        22,\n" +
+                        "        30,\n" +
+                        "        135000000\n" +
+                        "    ],\n" +
+                        "    \"placeId\": 1,\n" +
+                        "    \"creatorId\": 1}"));*/
 }
