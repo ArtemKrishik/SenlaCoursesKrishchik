@@ -1,6 +1,7 @@
 package com.github.krishchik.whowithme.controller;
 
 import com.github.krishchik.whowithme.controller.dto.PlaceDto;
+import com.github.krishchik.whowithme.metamodel.Roles;
 import com.github.krishchik.whowithme.service.serviceImpl.PlaceServiceImpl;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -9,6 +10,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -29,6 +31,7 @@ public class PlaceController {
     }
 
     @GetMapping(value = "user/{id}")
+
     public PlaceDto getPlaceById(@PathVariable Long id) {
         return placeService.getPlaceById(id);
     }
@@ -44,6 +47,7 @@ public class PlaceController {
     }
 
     @GetMapping(value = "/user")
+    @Secured({Roles.USER, Roles.ADMIN})
     public Page<PlaceDto> getAll(
             @RequestParam(value = "size", required = false, defaultValue = "3") Integer size,
             @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,

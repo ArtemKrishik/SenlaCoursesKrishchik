@@ -18,7 +18,7 @@ public class Role extends AbstractEntity {
     @Column(name = "name")
     private String name;
     @OneToMany(mappedBy = "role")
-    private List<User> users;
+    private List<Credential> credentials;
 
     @Override
     public String toString() {

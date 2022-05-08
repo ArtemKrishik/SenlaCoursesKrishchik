@@ -11,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -23,11 +24,13 @@ import java.util.regex.Pattern;
 @RequestMapping("/events")
 @AllArgsConstructor
 @Validated
+@CrossOrigin(origins = "http://localhost:3000")
 public class EventController {
 
     private final EventServiceImpl eventService;
     private final UserServiceImpl userService;
     private final EventSpecificationsBuilder builder;
+
 
     @PostMapping(value = "/user")
     public void createEvent(
@@ -54,7 +57,8 @@ public class EventController {
         eventService.deleteEvent(id, principal);
     }
 
-    @GetMapping(value = "/user")
+    @GetMapping
+    @PreAuthorize("permitAll")
     public Page<EventDto> getAll(
             @RequestParam(value = "size", required = false, defaultValue = "3") Integer size,
             @RequestParam(value = "page", required = false, defaultValue = "0") Integer page,

@@ -1,12 +1,9 @@
 package com.github.krishchik.whowithme.controller.dto;
 
 import com.github.krishchik.whowithme.model.EventStatus;
-import com.github.krishchik.whowithme.model.Place;
-import com.github.krishchik.whowithme.model.User;
 import lombok.*;
 
 import javax.validation.constraints.NotNull;
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 @EqualsAndHashCode(callSuper = true)

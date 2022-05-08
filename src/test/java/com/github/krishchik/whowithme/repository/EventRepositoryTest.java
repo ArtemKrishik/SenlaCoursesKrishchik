@@ -35,7 +35,7 @@ public class EventRepositoryTest extends RepositoryTest {
     RoleCrudRepository roleRepository;
 
     private Event event1;
-    private User user;
+    private Credential credential;
     private Profile profile;
     private Role role;
     private Place place1;
@@ -49,10 +49,10 @@ public class EventRepositoryTest extends RepositoryTest {
         place1.setCapacity(10);
         place1.setPrice(100);
 
-        user = new User();
-        user.setId(2l);
-        user.setLogin("login");
-        user.setPassword("password");
+        credential = new Credential();
+        credential.setId(2l);
+        credential.setLogin("login");
+        credential.setPassword("password");
         profile = new Profile();
         profile.setId(1l);
         profile.setAge(10);
@@ -79,11 +79,11 @@ public class EventRepositoryTest extends RepositoryTest {
         placeRepository.save(place1);
         profileRepository.save(profile);
         roleRepository.save(role);
-        user.setProfile(profile);
-        user.setRole(role);
-        userRepository.save(user);
+        credential.setProfile(profile);
+        credential.setRole(role);
+        userRepository.save(credential);
         event1.setPlace(place1);
-        event1.setCreator(user);
+        event1.setCreator(credential);
         eventRepository.save(event1);
         Pageable pageable = PageRequest.of(0,3);
         final Page<Event> events = eventRepository.findEventsByPlaceId(pageable, place1.getId());
@@ -96,11 +96,11 @@ public class EventRepositoryTest extends RepositoryTest {
         placeRepository.save(place1);
         profileRepository.save(profile);
         roleRepository.save(role);
-        user.setProfile(profile);
-        user.setRole(role);
-        userRepository.save(user);
+        credential.setProfile(profile);
+        credential.setRole(role);
+        userRepository.save(credential);
         event1.setPlace(place1);
-        event1.setCreator(user);
+        event1.setCreator(credential);
         eventRepository.save(event1);
         eventRepository.getById(1l);
         assertEquals(1l, eventRepository.getById(1l).getId());
@@ -111,11 +111,11 @@ public class EventRepositoryTest extends RepositoryTest {
         placeRepository.save(place1);
         profileRepository.save(profile);
         roleRepository.save(role);
-        user.setProfile(profile);
-        user.setRole(role);
-        userRepository.save(user);
+        credential.setProfile(profile);
+        credential.setRole(role);
+        userRepository.save(credential);
         event1.setPlace(place1);
-        event1.setCreator(user);
+        event1.setCreator(credential);
         eventRepository.save(event1);
         eventRepository.delete(event1);
         assertThrows(
@@ -129,11 +129,11 @@ public class EventRepositoryTest extends RepositoryTest {
         placeRepository.save(place1);
         profileRepository.save(profile);
         roleRepository.save(role);
-        user.setProfile(profile);
-        user.setRole(role);
-        userRepository.save(user);
+        credential.setProfile(profile);
+        credential.setRole(role);
+        userRepository.save(credential);
         event1.setPlace(place1);
-        event1.setCreator(user);
+        event1.setCreator(credential);
         eventRepository.save(event1);
         Pageable pageable = PageRequest.of(0,3);
         final Page<Event> events = eventRepository.findAll(pageable);
@@ -147,11 +147,11 @@ public class EventRepositoryTest extends RepositoryTest {
         placeRepository.save(place1);
         profileRepository.save(profile);
         roleRepository.save(role);
-        user.setProfile(profile);
-        user.setRole(role);
-        userRepository.save(user);
+        credential.setProfile(profile);
+        credential.setRole(role);
+        userRepository.save(credential);
         event1.setPlace(place1);
-        event1.setCreator(user);
+        event1.setCreator(credential);
         eventRepository.save(event1);
 
         Event updatedEvent = eventRepository.getById(1l);

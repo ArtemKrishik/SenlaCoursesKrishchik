@@ -13,8 +13,8 @@
         <sqlFile encoding="utf8" path="./sql/01.create-events-table.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
-    <changeSet id="homework-2-users-table" author="Artem Krishchik">
-        <sqlFile encoding="utf8" path="./sql/02.create-users-table.sql" relativeToChangelogFile="true"/>
+    <changeSet id="homework-2-credentials-table" author="Artem Krishchik">
+        <sqlFile encoding="utf8" path="./sql/02.create-credentials-table.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
     <changeSet id="homework-2-places-table" author="Artem Krishchik">
@@ -29,8 +29,8 @@
         <sqlFile encoding="utf8" path="./sql/12.create-roles-table.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
-    <changeSet id="homework-2-users-events-table" author="Artem Krishchik">
-        <sqlFile encoding="utf8" path="./sql/13.create-users-events-table.sql" relativeToChangelogFile="true"/>
+    <changeSet id="homework-2-credentials-events-table" author="Artem Krishchik">
+        <sqlFile encoding="utf8" path="./sql/13.create-credentials-events-table.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
 
@@ -46,16 +46,16 @@
     <changeSet id="homework-2-add-constraint-users_fk1" author="Artem Krishchik">
         <sqlFile encoding="utf8" path="./sql/25.add-constraint-users_fk1.sql" relativeToChangelogFile="true"/>
     </changeSet>
-    <changeSet id="homework-2-add-constraint-users-events_fk0" author="Artem Krishchik">
-        <sqlFile encoding="utf8" path="./sql/07.add-constraint-users-events_fk0.sql" relativeToChangelogFile="true"/>
+    <changeSet id="homework-2-add-constraint-credentials-events_fk0" author="Artem Krishchik">
+        <sqlFile encoding="utf8" path="./sql/07.add-constraint-credentials-events_fk0.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
     <changeSet id="homework-2-constraint-events" author="Artem Krishchik">
         <sqlFile encoding="utf8" path="./sql/03.add-constraint-events_fk1.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
-    <changeSet id="homework-2-add-constraint-users-events_fk1" author="Artem Krishchik">
-        <sqlFile encoding="utf8" path="./sql/08.add-constraint-users-events_fk1.sql" relativeToChangelogFile="true"/>
+    <changeSet id="homework-2-add-constraint-credentials-events_fk1" author="Artem Krishchik">
+        <sqlFile encoding="utf8" path="./sql/08.add-constraint-credentials-events_fk1.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
     <changeSet id="homework-2-places-table" author="Artem Krishchik">
@@ -63,8 +63,8 @@
     </changeSet>
 
 
-    <changeSet id="homework-2-add-index-users-fk2" author="Artem Krishchik">
-        <sqlFile encoding="utf8" path="./sql/16.add-index-users-fk2.sql" relativeToChangelogFile="true"/>
+    <changeSet id="homework-2-add-index-credentials-fk2" author="Artem Krishchik">
+        <sqlFile encoding="utf8" path="./sql/16.add-index-credentials-fk2.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
 
@@ -76,8 +76,8 @@
         <sqlFile encoding="utf8" path="./sql/20.roles-table-data-insert.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
-    <changeSet id="homework-2-users-table-data-insert" author="Artem Krishchik">
-        <sqlFile encoding="utf8" path="./sql/21.users-table-data-insert.sql" relativeToChangelogFile="true"/>
+    <changeSet id="homework-2-credentials-table-data-insert" author="Artem Krishchik">
+        <sqlFile encoding="utf8" path="./sql/21.credentials-table-data-insert.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
     <changeSet id="homework-2-places-table-data-insert" author="Artem Krishchik">

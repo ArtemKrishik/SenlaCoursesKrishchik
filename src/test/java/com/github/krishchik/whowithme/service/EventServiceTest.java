@@ -3,7 +3,7 @@ package com.github.krishchik.whowithme.service;
 import com.github.krishchik.whowithme.controller.dto.EventDto;
 import com.github.krishchik.whowithme.model.Event;
 import com.github.krishchik.whowithme.model.Role;
-import com.github.krishchik.whowithme.model.User;
+import com.github.krishchik.whowithme.model.Credential;
 import com.github.krishchik.whowithme.repository.EventCrudRepository;
 import com.github.krishchik.whowithme.repository.filter.EventSpecification;
 import com.github.krishchik.whowithme.repository.filter.SearchCriteria;
@@ -50,8 +50,8 @@ public class EventServiceTest {
     private final Principal principal = new JMXPrincipal("artem");
     private final Role roleAdmin = Role.builder().id(1l).name("ADMIN").build();
     private final Role roleUser = Role.builder().id(2l).name("USER").build();
-    private final User user = User.builder().id(1l).login("artem").role(roleAdmin).build();
-    private final Event event = Event.builder().id(1l).creator(user).startTime(new java.sql.Timestamp(System.currentTimeMillis())).endTime(new java.sql.Timestamp(System.currentTimeMillis())).build();
+    private final Credential credential = Credential.builder().id(1l).login("artem").role(roleAdmin).build();
+    private final Event event = Event.builder().id(1l).creator(credential).startTime(new java.sql.Timestamp(System.currentTimeMillis())).endTime(new java.sql.Timestamp(System.currentTimeMillis())).build();
 
     private final EventDto eventDto = EventDto.builder().id(1l).startTime(LocalDateTime.now()).endTime(LocalDateTime.now()).build();
     @Test
@@ -65,7 +65,7 @@ public class EventServiceTest {
     @Test
     public void deleteEvent()  {
         doNothing().when(eventRepository).delete(event);
-        when(userService.getUserByLogin(principal.getName())).thenReturn(user);
+        when(userService.getUserByLogin(principal.getName())).thenReturn(credential);
         Principal principal = new Principal() {
             @Override
             public String getName() {
@@ -81,7 +81,7 @@ public class EventServiceTest {
     public void updateEvent() {
         when(eventRepository.findById(any())).thenReturn(Optional.of(event));
         when(eventRepository.save(event)).thenReturn(event);
-        when(userService.getUserByLogin(any())).thenReturn(user);
+        when(userService.getUserByLogin(any())).thenReturn(credential);
         eventService.updateEvent(eventDto, principal);
         verify(eventRepository, times(1)).save(event);
     }
@@ -90,7 +90,7 @@ public class EventServiceTest {
     public void updateEventShouldPass() {
         when(eventRepository.findById(any())).thenReturn(Optional.of(event));
         when(eventRepository.save(event)).thenReturn(event);
-        when(userService.getUserByLogin(any())).thenReturn(User.builder().login("nikita").role(roleAdmin).build());
+        when(userService.getUserByLogin(any())).thenReturn(Credential.builder().login("nikita").role(roleAdmin).build());
         eventService.updateEvent(eventDto, principal);
         verify(eventRepository, times(1)).save(event);
 
@@ -98,7 +98,7 @@ public class EventServiceTest {
     @Test
     public void updateEventShouldThrowOperationException() {
         when(eventRepository.findById(any())).thenReturn(Optional.of(event));
-        when(userService.getUserByLogin(any())).thenReturn(User.builder().login("nikita").role(roleUser).build());
+        when(userService.getUserByLogin(any())).thenReturn(Credential.builder().login("nikita").role(roleUser).build());
         assertThrows(
                 OperationException.class,
                 () -> eventService.updateEvent(eventDto, principal)
@@ -108,7 +108,7 @@ public class EventServiceTest {
     public void saveEvent()  {
         when(eventRepository.save(any())).thenReturn(event);
         when(eventConverter.toEntity(any(EventDto.class))).thenReturn(event);
-        when(userService.getUserByLogin(any())).thenReturn(user);
+        when(userService.getUserByLogin(any())).thenReturn(credential);
         eventService.createEvent(eventDto, principal);
         verify(eventRepository, times(1)).save(event);
     }

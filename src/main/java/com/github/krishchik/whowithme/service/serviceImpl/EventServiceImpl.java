@@ -1,5 +1,6 @@
 package com.github.krishchik.whowithme.service.serviceImpl;
 
+import com.github.krishchik.whowithme.model.Credential;
 import com.github.krishchik.whowithme.repository.EventCrudRepository;
 import com.github.krishchik.whowithme.repository.UserCrudRepository;
 import com.github.krishchik.whowithme.service.EventService;
@@ -7,13 +8,11 @@ import com.github.krishchik.whowithme.service.UserService;
 import com.github.krishchik.whowithme.controller.dto.EventDto;
 import com.github.krishchik.whowithme.controller.dto.UserDto;
 import com.github.krishchik.whowithme.model.Event;
-import com.github.krishchik.whowithme.model.User;
 import com.github.krishchik.whowithme.service.converter.EventConverter;
 import com.github.krishchik.whowithme.service.converter.UserConverter;
 import com.github.krishchik.whowithme.exception.OperationException;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
@@ -56,7 +55,7 @@ public class EventServiceImpl implements EventService {
     @Override
     @Transactional
     public Page<EventDto> getUsersEvents(Pageable pageable, Long id) {
-        Page<Event> events = eventCrudRepository.findEventsByUsersId(pageable, id);
+        Page<Event> events = eventCrudRepository.findEventsByCredentials(pageable, id);
         events.forEach(this::updateEventStatus);
         List<EventDto> listpleisovDto = events.getContent().stream()
                 .map(eventConverter::toDto)
@@ -69,7 +68,7 @@ public class EventServiceImpl implements EventService {
     @Override
     @Transactional
     public Page<UserDto> getUsersOfEvent(Pageable pageable, Long id) {
-        Page<User> users = userCrudRepository.findUsersByEventsId(pageable, id);
+        Page<Credential> users = userCrudRepository.findCredentialsByEventsId(pageable, id);
         List<UserDto> userDtoList = users.getContent().stream()
                 .map(userConverter::toDto)
                 .collect(Collectors.toList());
@@ -80,7 +79,7 @@ public class EventServiceImpl implements EventService {
     @Override
     @Transactional
     public void createEvent(EventDto eventDto, Principal principal) {
-        User creator = userService.getUserByLogin(principal.getName());
+        Credential creator = userService.getUserByLogin(principal.getName());
         if(eventDto.getStartTime().isAfter(eventDto.getEndTime())) throw new OperationException("incorrect data input");
         eventDto.setCreatorId(creator.getId());
         Event event = eventCrudRepository.save(eventConverter.toEntity(eventDto));
@@ -91,7 +90,7 @@ public class EventServiceImpl implements EventService {
     @Override
     @Transactional
     public void updateEvent(EventDto eventDto, Principal principal) {
-        User updater = userService.getUserByLogin(principal.getName());
+        Credential updater = userService.getUserByLogin(principal.getName());
         Event eventToChange = eventCrudRepository.findById(eventDto.getId())
                 .orElseThrow(() -> new OperationException("Incorrect input when trying change event"));
         if(updater.equals(eventToChange.getCreator())||updater.getRole().getName().equals("ADMIN")) {
@@ -123,7 +122,7 @@ public class EventServiceImpl implements EventService {
     @Override
     @Transactional
     public void deleteEvent(Long eventId, Principal principal) {
-        User deleter = userService.getUserByLogin(principal.getName());
+        Credential deleter = userService.getUserByLogin(principal.getName());
         Event eventToDelete = eventCrudRepository.findById(eventId)
                 .orElseThrow(() -> new OperationException("event with id "+eventId+" wasn`t found"));
         if(deleter.equals(eventToDelete.getCreator())||deleter.getRole().getName().equals("ADMIN")){
@@ -156,7 +155,7 @@ public class EventServiceImpl implements EventService {
         Page<Event> events = eventCrudRepository.findAll(specification, pageable);
 
         events.forEach(this::updateEventStatus);
-        events.getContent().get(0).getUsers().size();
+        events.getContent().get(0).getCredentials().size();
         List<EventDto> listpleisovDto = events.getContent().stream()
                 .map(eventConverter::toDto)
                 .collect(Collectors.toList());

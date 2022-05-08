@@ -3,7 +3,7 @@ package com.github.krishchik.whowithme.service;
 import com.github.krishchik.whowithme.controller.dto.MessageDto;
 import com.github.krishchik.whowithme.controller.dto.ProfileDto;
 import com.github.krishchik.whowithme.controller.dto.UserDto;
-import com.github.krishchik.whowithme.model.User;
+import com.github.krishchik.whowithme.model.Credential;
 import org.springframework.data.domain.Page;
 
 import org.springframework.data.domain.Pageable;
@@ -24,7 +24,7 @@ public interface UserService {
 
     ProfileDto getUsersProfile(Principal principal);
 
-    User getUserByLogin(String login);
+    Credential getUserByLogin(String login);
 
     MessageDto subscribeUserOnEvent(Principal principal, Long eventId);
 

@@ -1,7 +1,7 @@
 package com.github.krishchik.whowithme.controller;
 
 import com.github.krishchik.whowithme.WebApplicationTest;
-import com.github.krishchik.whowithme.model.User;
+import com.github.krishchik.whowithme.model.Credential;
 import com.github.krishchik.whowithme.repository.UserCrudRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,27 +15,27 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 @Transactional
-public class UserControllerTest extends WebApplicationTest {
+public class CredentialControllerTest extends WebApplicationTest {
 
     @Autowired
     private UserCrudRepository userRepository;
 
-    private final User user = User.builder().id(1l).login("artem").password("password").build();
+    private final Credential credential = Credential.builder().id(1l).login("artem").password("password").build();
 
     @Test
     public void userShouldReturnWithCorrectFields() throws Exception {
 
         mockMvc.perform(
-                get("/users/admin/" + user.getId())
+                get("/users/admin/" + credential.getId())
         ).andExpect(status().is2xxSuccessful())
-                .andExpect(jsonPath("$.id").value(user.getId()))
-                .andExpect(jsonPath("$.login").value(user.getLogin()))
+                .andExpect(jsonPath("$.id").value(credential.getId()))
+                .andExpect(jsonPath("$.login").value(credential.getLogin()))
                 .andExpect(jsonPath("$.password").value("$2a$04$/37BokSgKBfktDPXmDnye.FLXOqdFBQnSLmL/mEvHlCIl9dTOK6.S"));
     }
 
     @Test
     public void userNameShouldBeUpdated() throws Exception {
-        userRepository.save(user);
+        userRepository.save(credential);
 
         final String userUpdateDto = String.format("""
                 {
@@ -46,12 +46,12 @@ public class UserControllerTest extends WebApplicationTest {
                 """);
 
         mockMvc.perform(
-                put("/users/user")
+                put("/users/credential")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(userUpdateDto)
         ).andExpect(status().is2xxSuccessful());
 
-        final User smith = userRepository.getById(1l);
+        final Credential smith = userRepository.getById(1l);
         assertEquals(smith.getLogin(), "andrei");
     }
 
@@ -60,7 +60,7 @@ public class UserControllerTest extends WebApplicationTest {
         mockMvc.perform(
                 get("/users/admin/12")
         ).andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.message").value("user with id 12 wasn`t found"));
+                .andExpect(jsonPath("$.message").value("credential with id 12 wasn`t found"));
     }
 
 }

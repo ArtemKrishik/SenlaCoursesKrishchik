@@ -1,10 +1,11 @@
 package com.github.krishchik.whowithme.security.jwt;
 
 import com.github.krishchik.whowithme.model.Role;
-import com.github.krishchik.whowithme.model.User;
+import com.github.krishchik.whowithme.model.Credential;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
+import org.springframework.security.core.userdetails.User;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,11 +17,11 @@ public final class JwtUserFactory {
     public JwtUserFactory() {
     }
 
-    public JwtUser create(User user) {
-        return new JwtUser(user.getId(),
-                user.getLogin(),
-                user.getPassword(),
-                mapToGrantedAuthorities(user.getRole()));
+    public User create(Credential credential) {
+        return new User(
+                credential.getLogin(),
+                credential.getPassword(),
+                mapToGrantedAuthorities(credential.getRole()));
     }
 
     private List<GrantedAuthority> mapToGrantedAuthorities(Role userRole) {
