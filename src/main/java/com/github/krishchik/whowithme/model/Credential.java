@@ -20,7 +20,7 @@ import java.util.List;
 @NamedEntityGraph(name = "user-events-entity-graph",
         attributeNodes = @NamedAttributeNode("events")
 )
-public class User extends AbstractEntity{
+public class Credential extends AbstractEntity{
 
 
     @Column(name = "login")
@@ -49,7 +49,7 @@ public class User extends AbstractEntity{
 
     @Override
     public String toString() {
-        return "User{" +
+        return "Credential{" +
                 "id=" + getId() +
                 ", login='" + login + '\'' +
                 ", password='" + password + '\'' +
@@ -57,7 +57,7 @@ public class User extends AbstractEntity{
     }
 
     @Builder
-    public User(Long id, String login, String password, Role role) {
+    public Credential(Long id, String login, String password, Role role) {
         super(id);
         this.login = login;
         this.password = password;

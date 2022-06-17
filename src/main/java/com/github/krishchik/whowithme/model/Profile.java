@@ -20,7 +20,7 @@ public class Profile extends AbstractEntity{
     @Column(name = "phone_number")
     private Long phoneNumber;
     @OneToOne(mappedBy = "profile")
-    private User user;
+    private Credential credential;
 
     @Override
     public String toString() {

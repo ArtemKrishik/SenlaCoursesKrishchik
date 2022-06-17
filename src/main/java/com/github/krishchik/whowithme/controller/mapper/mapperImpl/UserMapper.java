@@ -1,12 +1,11 @@
 package com.github.krishchik.whowithme.controller.mapper.mapperImpl;
 
 import com.github.krishchik.whowithme.controller.mapper.IUserMapper;
+import com.github.krishchik.whowithme.model.Credential;
 import com.github.krishchik.whowithme.repository.ProfileCrudRepository;
 import com.github.krishchik.whowithme.repository.RoleCrudRepository;
 import com.github.krishchik.whowithme.controller.dto.UserDto;
-import com.github.krishchik.whowithme.model.User;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeMap;
@@ -28,50 +27,50 @@ public class UserMapper implements IUserMapper {
 
     @PostConstruct
     public void setupMapper() {
-        TypeMap<User, UserDto> typeMap = mapper.getTypeMap(User.class, UserDto.class);
+        TypeMap<Credential, UserDto> typeMap = mapper.getTypeMap(Credential.class, UserDto.class);
         if (typeMap == null) {
-            mapper.createTypeMap(User.class, UserDto.class)
+            mapper.createTypeMap(Credential.class, UserDto.class)
                     .addMappings(m -> m.skip(UserDto::setProfileId)).setPostConverter(toDtoConverter())
                     .addMappings(m -> m.skip(UserDto::setRoleId)).setPostConverter(toDtoConverter());
-            mapper.createTypeMap(UserDto.class, User.class)
-                    .addMappings(m -> m.skip(User::setProfile)).setPostConverter(toEntityConverter())
-                    .addMappings(m -> m.skip(User::setRole)).setPostConverter(toEntityConverter());
+            mapper.createTypeMap(UserDto.class, Credential.class)
+                    .addMappings(m -> m.skip(Credential::setProfile)).setPostConverter(toEntityConverter())
+                    .addMappings(m -> m.skip(Credential::setRole)).setPostConverter(toEntityConverter());
         }
     }
 
-    void mapSpecificFields(User source, UserDto destination) {
+    void mapSpecificFields(Credential source, UserDto destination) {
         destination.setProfileId(getProfileId(source));
         destination.setRoleId(getRoleId(source));
     }
 
-    private Long getProfileId(User source) {
+    private Long getProfileId(Credential source) {
         return Objects.isNull(source) || Objects.isNull(source.getId()) ? null : source.getProfile().getId();
     }
 
-    private Long getRoleId(User source) {
+    private Long getRoleId(Credential source) {
         return Objects.isNull(source) || Objects.isNull(source.getId()) ? null : source.getRole().getId();
     }
 
-    void mapSpecificFields(UserDto source, User destination) throws Exception {
+    void mapSpecificFields(UserDto source, Credential destination) throws Exception {
 
         destination.setProfile(profileRepository.getById(source.getProfileId()));
         destination.setRole(roleRepository.getById(source.getRoleId()));
 
     }
 
-    Converter<User, UserDto> toDtoConverter() {
+    Converter<Credential, UserDto> toDtoConverter() {
         return context -> {
-            User source = context.getSource();
+            Credential source = context.getSource();
             UserDto destination = context.getDestination();
             mapSpecificFields(source, destination);
             return context.getDestination();
         };
     }
 
-    Converter<UserDto, User> toEntityConverter() {
+    Converter<UserDto, Credential> toEntityConverter() {
         return context -> {
             UserDto source = context.getSource();
-            User destination = context.getDestination();
+            Credential destination = context.getDestination();
             try {
                 mapSpecificFields(source, destination);
             } catch (Exception exception) {
@@ -82,14 +81,14 @@ public class UserMapper implements IUserMapper {
     }
 
     @Override
-    public User toEntity(UserDto dto) {
+    public Credential toEntity(UserDto dto) {
         return Objects.isNull(dto)
                 ? null
-                : mapper.map(dto, User.class);
+                : mapper.map(dto, Credential.class);
     }
 
     @Override
-    public UserDto toDto(User entity) {
+    public UserDto toDto(Credential entity) {
         return Objects.isNull(entity)
                 ? null
                 : mapper.map(entity, UserDto.class);

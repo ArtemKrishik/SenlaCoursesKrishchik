@@ -2,9 +2,9 @@ package com.github.krishchik.whowithme.service;
 
 import com.github.krishchik.whowithme.controller.dto.ProfileDto;
 import com.github.krishchik.whowithme.controller.dto.UserDto;
+import com.github.krishchik.whowithme.model.Credential;
 import com.github.krishchik.whowithme.model.Profile;
 import com.github.krishchik.whowithme.model.Role;
-import com.github.krishchik.whowithme.model.User;
 import com.github.krishchik.whowithme.repository.ProfileCrudRepository;
 import com.github.krishchik.whowithme.repository.RoleCrudRepository;
 import com.github.krishchik.whowithme.repository.UserCrudRepository;
@@ -32,7 +32,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-public class UserServiceTest {
+public class CredentialServiceTest {
 
     @InjectMocks
     private UserServiceImpl userService;
@@ -57,30 +57,30 @@ public class UserServiceTest {
 
     private final UserDto userDto = UserDto.builder().id(1l).login("login").password("password").build();
     private final Role role = Role.builder().id(1l).name("ADMIN").build();
-    private final User user = User.builder().id(1l).login("login").password("password").build();
+    private final Credential credential = Credential.builder().id(1l).login("login").password("password").build();
 
     @Test
     public void getById()  {
-        when(userRepository.findById(any())).thenReturn(Optional.of(user));
-        when(userConverter.toDto(any(User.class))).thenReturn(userDto);
+        when(userRepository.findById(any())).thenReturn(Optional.of(credential));
+        when(userConverter.toDto(any(Credential.class))).thenReturn(userDto);
         final UserDto userDto = userService.getUserById(1l);
         assertEquals(1l,userDto.getId());
     }
 
     @Test
     public void deleteUser() {
-        doNothing().when(userRepository).delete(user);
-        when(userRepository.findById(any())).thenReturn(Optional.of(user));
+        doNothing().when(userRepository).delete(credential);
+        when(userRepository.findById(any())).thenReturn(Optional.of(credential));
         userService.deleteUser(1l);
-        verify(userRepository, times(1)).delete(user);
+        verify(userRepository, times(1)).delete(credential);
     }
 
     @Test
     public void updateUser() {
-        when(userRepository.findById(any())).thenReturn(Optional.of(user));
-        when(userRepository.save(user)).thenReturn(user);
+        when(userRepository.findById(any())).thenReturn(Optional.of(credential));
+        when(userRepository.save(credential)).thenReturn(credential);
         userService.updateUser(userDto);
-        verify(userRepository, times(1)).save(user);
+        verify(userRepository, times(1)).save(credential);
     }
 
     @Test
@@ -116,9 +116,9 @@ public class UserServiceTest {
     @Test
     public void getAll() throws Exception {
         Pageable pageable = PageRequest.of(0, 2, Sort.by("id"));
-        List<User> users = new ArrayList<>();
-        users.add(user);
-        Page<User> pageOfUsers = new PageImpl<>(users, pageable, users.size());
+        List<Credential> credentials = new ArrayList<>();
+        credentials.add(credential);
+        Page<Credential> pageOfUsers = new PageImpl<>(credentials, pageable, credentials.size());
         when(userRepository.findAll(pageable)).thenReturn(pageOfUsers);
         when(userConverter.toDto(any())).thenReturn(userDto);
         final Page<UserDto> userDtos1 = userService.getAllUsers(pageable);
@@ -136,8 +136,8 @@ public class UserServiceTest {
                 return "login";
             }
         };
-        when(userRepository.findUserByLogin(principal.getName())).thenReturn(Optional.of(user));
-        when(profileRepository.findProfileByUserId(any())).thenReturn(Optional.of(profile));
+        when(userRepository.findCredentialByLogin(principal.getName())).thenReturn(Optional.of(credential));
+        when(profileRepository.findProfileByCredentialId(any())).thenReturn(Optional.of(profile));
         when(profileConverter.toDto(any(Profile.class))).thenReturn(profileDto);
 
         assertEquals(profileDto, userService.getUsersProfile(principal));

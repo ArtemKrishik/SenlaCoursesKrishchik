@@ -11,7 +11,7 @@ public interface EventCrudRepository
         extends JpaRepository<Event, Long>, JpaSpecificationExecutor<Event> {
 
 
-    Page<Event> findEventsByUsersId(Pageable pageable, Long userId);
+    Page<Event> findEventsByCredentialsId(Pageable pageable, Long userId);
 
     Page<Event> findEventsByPlaceId(Pageable pageable, Long id);
 

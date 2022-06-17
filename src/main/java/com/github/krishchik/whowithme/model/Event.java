@@ -33,7 +33,7 @@ public class Event extends AbstractEntity{
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "creator_id")
-    private User creator;
+    private Credential creator;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "place_id")
     private Place place;
@@ -43,10 +43,10 @@ public class Event extends AbstractEntity{
             joinColumns = @JoinColumn (name = "event_id"),
             inverseJoinColumns = @JoinColumn (name = "user_id")
     )
-    private List<User> users;
+    private List<Credential> credentials;
 
-    public void addUser(User user) {
-        users.add(user);
+    public void addUser(Credential credential) {
+        credentials.add(credential);
     }
 
 
@@ -63,7 +63,7 @@ public class Event extends AbstractEntity{
     }
 
     @Builder
-    public Event(Long id, String eventName, EventStatus eventStatus, Integer ageLimit, Integer numberOfSlots, Timestamp startTime, Timestamp endTime, User creator) {
+    public Event(Long id, String eventName, EventStatus eventStatus, Integer ageLimit, Integer numberOfSlots, Timestamp startTime, Timestamp endTime, Credential creator) {
         super(id);
         this.eventName = eventName;
         this.eventStatus = eventStatus;

@@ -6,7 +6,6 @@ import org.modelmapper.convention.MatchingStrategies;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @Configuration
 @ComponentScan("com.github")
@@ -14,9 +13,7 @@ public class ApplicationConfiguration {
 
     @Bean
     public ModelMapper modelMapper() {
-
         ModelMapper modelMapper = new ModelMapper();
-
         modelMapper
                 .getConfiguration()
                 .setMatchingStrategy(MatchingStrategies.STRICT)
@@ -24,11 +21,6 @@ public class ApplicationConfiguration {
                 .setSkipNullEnabled(true)
                 .setFieldAccessLevel(org.modelmapper.config.Configuration.AccessLevel.PRIVATE);
         return modelMapper;
-    }
-
-    @Bean
-    public BCryptPasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
     }
 
     @Bean

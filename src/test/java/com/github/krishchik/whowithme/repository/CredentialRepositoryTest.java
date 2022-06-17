@@ -27,7 +27,7 @@ import static org.junit.jupiter.api.Assertions.*;
         loader = AnnotationConfigWebContextLoader.class
 )
 @Transactional
-public class UserRepositoryTest extends RepositoryTest {
+public class CredentialRepositoryTest extends RepositoryTest {
 
     @Autowired
     private UserCrudRepository userRepository;
@@ -36,7 +36,7 @@ public class UserRepositoryTest extends RepositoryTest {
     @Autowired
     private RoleCrudRepository roleRepository;
 
-    private User user;
+    private Credential credential;
     private Profile profile;
     private Role role;
 
@@ -44,9 +44,9 @@ public class UserRepositoryTest extends RepositoryTest {
     @BeforeAll
     public void getTestUser() throws Exception {
 
-        user = new User();
-        user.setLogin("login");
-        user.setPassword("password");
+        credential = new Credential();
+        credential.setLogin("login");
+        credential.setPassword("password");
         profile = new Profile();
 
         profile.setAge(10);
@@ -62,13 +62,13 @@ public class UserRepositoryTest extends RepositoryTest {
     void shouldDeleteUserCorrect() throws Exception {
         profileRepository.save(profile);
         roleRepository.save(role);
-        user.setProfile(profile);
-        user.setRole(role);
-        userRepository.save(user);
-        userRepository.delete(user);
+        credential.setProfile(profile);
+        credential.setRole(role);
+        userRepository.save(credential);
+        userRepository.delete(credential);
         assertThrows(
                 JpaObjectRetrievalFailureException.class,
-                () -> userRepository.getById(user.getId())
+                () -> userRepository.getById(credential.getId())
         );
     }
 
@@ -76,10 +76,10 @@ public class UserRepositoryTest extends RepositoryTest {
     public void shouldFindUserByIdCorrect() throws Exception {
         profileRepository.save(profile);
         roleRepository.save(role);
-        user.setProfile(profile);
-        user.setRole(role);
-        userRepository.save(user);
-        assertEquals(userRepository.findById(user.getId()).get().getId(), user.getId());
+        credential.setProfile(profile);
+        credential.setRole(role);
+        userRepository.save(credential);
+        assertEquals(userRepository.findById(credential.getId()).get().getId(), credential.getId());
     }
 
 
@@ -88,22 +88,22 @@ public class UserRepositoryTest extends RepositoryTest {
     public void shouldGiveUsersProfileCorrect() throws Exception {
         profileRepository.save(profile);
         roleRepository.save(role);
-        user.setProfile(profile);
-        user.setRole(role);
-        userRepository.save(user);
-        assertEquals(profileRepository.findProfileByUserId(user.getId()).get().getId(), profile.getId());
+        credential.setProfile(profile);
+        credential.setRole(role);
+        userRepository.save(credential);
+        assertEquals(profileRepository.findProfileByCredentialId(credential.getId()).get().getId(), profile.getId());
     }
 
     @Test
     public void shouldReturnAllUsers() throws Exception {
         profileRepository.save(profile);
         roleRepository.save(role);
-        user.setProfile(profile);
-        user.setRole(role);
-        userRepository.save(user);
-        final List<User> users = userRepository.findAll();
-        assertEquals(4, users.size());
-        assertEquals(1l, users.get(0).getId());
+        credential.setProfile(profile);
+        credential.setRole(role);
+        userRepository.save(credential);
+        final List<Credential> credentials = userRepository.findAll();
+        assertEquals(4, credentials.size());
+        assertEquals(1l, credentials.get(0).getId());
 
     }
 
@@ -111,13 +111,13 @@ public class UserRepositoryTest extends RepositoryTest {
     public void shouldUpdateUserCorrect() throws Exception {
         profileRepository.save(profile);
         roleRepository.save(role);
-        user.setProfile(profile);
-        user.setRole(role);
-        userRepository.save(user);
-        User updatedUser = userRepository.getById(user.getId());
-        updatedUser.setLogin("newLogin");
-        userRepository.save(updatedUser);
-        assertEquals("newLogin", userRepository.getById(user.getId()).getLogin());
+        credential.setProfile(profile);
+        credential.setRole(role);
+        userRepository.save(credential);
+        Credential updatedCredential = userRepository.getById(credential.getId());
+        updatedCredential.setLogin("newLogin");
+        userRepository.save(updatedCredential);
+        assertEquals("newLogin", userRepository.getById(credential.getId()).getLogin());
     }
 
 }

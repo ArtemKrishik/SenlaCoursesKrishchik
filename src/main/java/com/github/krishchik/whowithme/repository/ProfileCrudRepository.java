@@ -7,6 +7,6 @@ import java.util.Optional;
 
 public interface ProfileCrudRepository extends JpaRepository<Profile, Long> {
 
-    Optional<Profile> findProfileByUserId(Long id);
+    Optional<Profile> findProfileByCredentialId(Long id);
 
 }

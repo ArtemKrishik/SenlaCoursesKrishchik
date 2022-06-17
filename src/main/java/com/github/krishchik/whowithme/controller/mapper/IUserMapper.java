@@ -1,7 +1,7 @@
 package com.github.krishchik.whowithme.controller.mapper;
 
 import com.github.krishchik.whowithme.controller.dto.UserDto;
-import com.github.krishchik.whowithme.model.User;
+import com.github.krishchik.whowithme.model.Credential;
 
-public interface IUserMapper extends IGenericMapper<User, UserDto> {
+public interface IUserMapper extends IGenericMapper<Credential, UserDto> {
 }

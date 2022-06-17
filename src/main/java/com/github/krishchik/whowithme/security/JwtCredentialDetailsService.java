@@ -1,29 +1,26 @@
 package com.github.krishchik.whowithme.security;
 
-import com.github.krishchik.whowithme.service.UserService;
-import com.github.krishchik.whowithme.model.User;
+import com.github.krishchik.whowithme.model.Credential;
 import com.github.krishchik.whowithme.security.jwt.JwtUserFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.github.krishchik.whowithme.service.UserService;
+import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
 @Service
-public class JwtUserDetailsService implements UserDetailsService {
+@AllArgsConstructor
+public class JwtCredentialDetailsService implements UserDetailsService {
 
     private final UserService userService;
     private final JwtUserFactory jwtUserFactory;
 
-    @Autowired
-    public JwtUserDetailsService(UserService userService, JwtUserFactory jwtUserFactory) {
-        this.userService = userService;
-        this.jwtUserFactory = jwtUserFactory;
-    }
 
     @Override
     public UserDetails loadUserByUsername(String login) throws UsernameNotFoundException {
-        User user = userService.getUserByLogin(login);
+        Credential user = userService.getUserByLogin(login);
         return jwtUserFactory.create(user);
     }
+
 }
