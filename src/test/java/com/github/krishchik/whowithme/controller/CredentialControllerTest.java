@@ -26,7 +26,7 @@ public class CredentialControllerTest extends WebApplicationTest {
     public void userShouldReturnWithCorrectFields() throws Exception {
 
         mockMvc.perform(
-                get("/users/admin/" + credential.getId())
+                get("/users" + credential.getId())
         ).andExpect(status().is2xxSuccessful())
                 .andExpect(jsonPath("$.id").value(credential.getId()))
                 .andExpect(jsonPath("$.login").value(credential.getLogin()))
@@ -46,7 +46,7 @@ public class CredentialControllerTest extends WebApplicationTest {
                 """);
 
         mockMvc.perform(
-                put("/users/credential")
+                put("/users")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(userUpdateDto)
         ).andExpect(status().is2xxSuccessful());
@@ -58,7 +58,7 @@ public class CredentialControllerTest extends WebApplicationTest {
     @Test
     public void shouldReturnErrorTextWhenUserNotExists() throws Exception {
         mockMvc.perform(
-                get("/users/admin/12")
+                get("/users/12")
         ).andExpect(status().isNotFound())
                 .andExpect(jsonPath("$.message").value("credential with id 12 wasn`t found"));
     }

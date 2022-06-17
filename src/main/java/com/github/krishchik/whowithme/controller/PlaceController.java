@@ -25,28 +25,31 @@ public class PlaceController {
 
     private final PlaceServiceImpl placeService;
 
-    @PostMapping(value = "/admin")
+    @PostMapping
+    @Secured(Roles.ADMIN)
     public void createPlace(@Valid @RequestBody PlaceDto placeDto) {
         placeService.createPlace(placeDto);
     }
 
-    @GetMapping(value = "user/{id}")
-
+    @GetMapping(value = "/{id}")
+    @Secured({Roles.ADMIN, Roles.USER})
     public PlaceDto getPlaceById(@PathVariable Long id) {
         return placeService.getPlaceById(id);
     }
 
-    @PutMapping(value = "/admin")
+    @PutMapping
+    @Secured(Roles.ADMIN)
     public void updatePlace(@Valid @RequestBody PlaceDto placeDto) {
         placeService.updatePlace(placeDto);
     }
 
-    @DeleteMapping(value = "/admin/{id}")
+    @DeleteMapping(value = "/{id}")
+    @Secured(Roles.ADMIN)
     public void deletePlace(@PathVariable Long id) {
         placeService.deletePlace(id);
     }
 
-    @GetMapping(value = "/user")
+    @GetMapping
     @Secured({Roles.USER, Roles.ADMIN})
     public Page<PlaceDto> getAll(
             @RequestParam(value = "size", required = false, defaultValue = "3") Integer size,

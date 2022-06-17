@@ -31,7 +31,7 @@ public class JwtTokenFilter extends GenericFilterBean {
                 SecurityContextHolder.getContext().setAuthentication(auth);
 
             }
-            else { log.info("tyt hyeva");}
+
         }
 
         filterChain.doFilter(req, res);

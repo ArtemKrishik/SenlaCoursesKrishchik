@@ -24,8 +24,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 )
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private static final String LOGIN_ENDPOINT = "/senla/login";
-    private static final String REGISTRATION_ENDPOINT = "**/registration";
+    private static final String LOGIN_ENDPOINT = "/login";
+    private static final String REGISTRATION_ENDPOINT = "/registration";
 
     private static final String ADMIN_ENDPOINT = "**/admin/**";
     private static final String USER_ENDPOINT = "**/user";
@@ -47,8 +47,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, LOGIN_ENDPOINT).permitAll()
-                .antMatchers(HttpMethod.GET, "/senla/events").permitAll()
                 .antMatchers(HttpMethod.POST, REGISTRATION_ENDPOINT).permitAll()
+                .antMatchers(HttpMethod.GET, "/events").permitAll()
                 .anyRequest().authenticated();
 
     }

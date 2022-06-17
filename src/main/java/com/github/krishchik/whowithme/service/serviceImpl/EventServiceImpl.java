@@ -55,7 +55,7 @@ public class EventServiceImpl implements EventService {
     @Override
     @Transactional
     public Page<EventDto> getUsersEvents(Pageable pageable, Long id) {
-        Page<Event> events = eventCrudRepository.findEventsByCredentials(pageable, id);
+        Page<Event> events = eventCrudRepository.findEventsByCredentialsId(pageable, id);
         events.forEach(this::updateEventStatus);
         List<EventDto> listpleisovDto = events.getContent().stream()
                 .map(eventConverter::toDto)

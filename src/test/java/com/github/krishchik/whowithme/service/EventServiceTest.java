@@ -113,7 +113,7 @@ public class EventServiceTest {
         verify(eventRepository, times(1)).save(event);
     }
 
-    @Test
+    /*@Test
     public void getAll() {
         Pageable pageable = PageRequest.of(0, 2, Sort.by("id"));
         SearchCriteria searchCriteria = new SearchCriteria("id", ":", 1l, true);
@@ -127,7 +127,7 @@ public class EventServiceTest {
         final Page<EventDto> eventDtos1 = eventService.getAllEvents(pageable, specification);
         assertEquals(1, eventDtos1.getTotalElements());
         assertEquals(1, eventDtos1.getTotalPages());
-    }
+    }*/
 
     @Test
     public void getEventsByPlace() {

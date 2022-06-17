@@ -1,5 +1,6 @@
 package com.github.krishchik.whowithme.service.serviceImpl;
 
+import com.github.krishchik.whowithme.exception.OperationException;
 import com.github.krishchik.whowithme.security.jwt.JwtTokenProvider;
 import com.github.krishchik.whowithme.service.AuthentificationService;
 import com.github.krishchik.whowithme.service.UserService;
@@ -35,11 +36,6 @@ import java.util.Map;
 public class AuthenticationServiceImpl implements AuthentificationService {
 
 
-    @Override
-    public AuthDto registration(UserDto userDto) {
-        return null;
-    }
-
     private final UserCrudRepository userCrudRepository;
     private final ProfileCrudRepository profileCrudRepository;
     private final BCryptPasswordEncoder passwordEncoder;
@@ -47,8 +43,9 @@ public class AuthenticationServiceImpl implements AuthentificationService {
     private final AuthenticationManager authenticate;
     private final JwtTokenProvider jwtTokenProvider;
     private final UserService userService;
+    private final MessageProducerService messageProducerService;
 
-    public AuthenticationServiceImpl(UserCrudRepository userCrudRepository, ProfileCrudRepository profileCrudRepository, BCryptPasswordEncoder passwordEncoder, RoleCrudRepository roleCrudRepository, AuthenticationManager authenticate, JwtTokenProvider jwtTokenProvider, UserService userService) {
+    public AuthenticationServiceImpl(UserCrudRepository userCrudRepository, ProfileCrudRepository profileCrudRepository, BCryptPasswordEncoder passwordEncoder, RoleCrudRepository roleCrudRepository, AuthenticationManager authenticate, JwtTokenProvider jwtTokenProvider, UserService userService, MessageProducerService messageProducerService) {
         this.userCrudRepository = userCrudRepository;
         this.profileCrudRepository = profileCrudRepository;
         this.passwordEncoder = passwordEncoder;
@@ -56,6 +53,7 @@ public class AuthenticationServiceImpl implements AuthentificationService {
         this.authenticate = authenticate;
         this.jwtTokenProvider = jwtTokenProvider;
         this.userService = userService;
+        this.messageProducerService = messageProducerService;
     }
 
     @Override
@@ -67,6 +65,7 @@ public class AuthenticationServiceImpl implements AuthentificationService {
             Map<Object, Object> response = new HashMap<>();
             response.put("username", userDto.getLogin());
             response.put("token", token);
+            messageProducerService.sendUserRegistrationMessage();
             log.info("credential with id "+ credential.getId()+ "and login " + credential.getLogin() + "login");
             return ResponseEntity.ok(response);
         } catch (AuthenticationException e) {
@@ -77,14 +76,14 @@ public class AuthenticationServiceImpl implements AuthentificationService {
         }
     }
 
-    /*@Override
+    @Override
     @Transactional
     public AuthDto registration(UserDto userDto) {
         if (loginExists(userDto.getLogin())) {
             throw new OperationException("There is an account with that login: "
                     + userDto.getLogin());
         }
-        Credential credential =new Credential();
+        Credential credential = new Credential();
         Profile profile = new Profile();
         profileCrudRepository.save(profile);
         credential.setProfile(profile);
@@ -100,11 +99,13 @@ public class AuthenticationServiceImpl implements AuthentificationService {
         authDto.setToken(token);
         authDto.setLogin(userDto.getLogin());
         log.info("new credential with id "+ credential.getId()+ "and login " + credential.getLogin() + "registered");
+
+        messageProducerService.sendUserRegistrationMessage();
         return authDto;
     }
 
     private boolean loginExists(String login) {
-        return userCrudRepository.findUserByLogin(login).isPresent();
-    }*/
+        return userCrudRepository.findCredentialByLogin(login).isPresent();
+    }
 
 }

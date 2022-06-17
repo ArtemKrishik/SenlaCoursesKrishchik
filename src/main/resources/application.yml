@@ -1,0 +1,18 @@
+server:
+  port: 8085
+spring:
+  datasource:
+    url: jdbc:postgresql://db:5432/who_with_me
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: 2856969artem
+  rabbitmq:
+    port: 5672
+    exchange: mail.exchange
+    queue: mail.queue
+    routingkey: mail.routingkey
+
+liquibase:
+  enabled: true
+  changelog: classpath:db/changelog/changelog.xml
+  contexts: dev
